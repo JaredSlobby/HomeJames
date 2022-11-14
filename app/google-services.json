@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "209844071605",
+    "project_id": "homejameswil",
+    "storage_bucket": "homejameswil.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:209844071605:android:59a627a21e057db27ee2fc",
+        "android_client_info": {
+          "package_name": "com.example.homejameswil"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "209844071605-cvttd4qp2utra2as4nr2mj3083o274nh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwMpiwnh18VVzkw8q1SPqLTeHr4zQjBPc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "209844071605-cvttd4qp2utra2as4nr2mj3083o274nh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

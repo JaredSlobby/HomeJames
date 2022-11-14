@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/Home"
+        android:enabled="true"
+        android:icon="@drawable/home_nav"
+        android:title="@string/home"/>
+    <item
+        android:id="@+id/Trips"
+        android:enabled="true"
+        android:icon="@drawable/trip_nav"
+        android:title="@string/trips"/>
+
+    <item
+        android:id="@+id/Account"
+        android:enabled="true"
+        android:icon="@drawable/user_nav"
+        android:title="@string/account"/>
+</menu>

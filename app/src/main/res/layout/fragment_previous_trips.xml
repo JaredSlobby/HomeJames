@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PreviousTrips"
+    android:background="@drawable/backgroundimage"
+    android:id="@+id/PreviousTripsFragment">
+
+<LinearLayout
+    android:layout_width="350dp"
+    android:layout_height="match_parent"
+    android:layout_marginTop="25dp"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <include layout="@layout/item_profile" />
+
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="210dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="180dp">
+
+        <include layout="@layout/previous_trip_time" />
+        <include layout="@layout/previous_trip_driver_name"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/report_driver"
+        android:layout_marginTop="85dp"
+        android:textSize="18sp"
+        android:textColor="@color/red"
+        android:clickable="true"
+        android:id="@+id/ReportDriver"
+        android:layout_marginStart="255dp"/>
+
+</FrameLayout>

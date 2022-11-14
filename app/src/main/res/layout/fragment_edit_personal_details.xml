@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".EditPersonalDetails"
+    android:id="@+id/parent_layout"
+    android:background="@drawable/backgroundimage">
+
+
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:text="@string/save"
+        android:textColor="@color/white"
+        android:background="@drawable/rounded_corner_button"
+        app:backgroundTint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="10dp"
+        android:onClick="EditPersonalDetailsCustomer"
+        android:layout_marginTop="10dp"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnBack"
+        android:background="@drawable/arrow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/EditPersonalDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_personal_details"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_marginTop="70dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginEnd="10dp" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/textInputLayoutName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/first_name"
+        app:boxStrokeColor="@color/white"
+        android:textColorHint="@color/white"
+        app:boxStrokeErrorColor="@color/red"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:maxLines="1"
+        app:startIconDrawable="@drawable/names"
+        app:startIconTint="@color/white"
+        app:endIconTint="@color/white"
+        app:hintTextColor="@color/white"
+        app:helperTextTextColor="@color/red"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditPersonalDetails"
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_marginTop="45dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Name"
+            android:layout_width="340dp"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:layout_height="match_parent"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/textInputLayoutSurname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/last_name"
+        app:boxStrokeColor="@color/white"
+        android:textColorHint="@color/white"
+        app:boxStrokeErrorColor="@color/red"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:maxLines="1"
+        app:startIconDrawable="@drawable/names"
+        app:startIconTint="@color/white"
+        app:endIconTint="@color/white"
+        app:hintTextColor="@color/white"
+        app:helperTextTextColor="@color/red"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutName"
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_marginTop="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Surname"
+            android:layout_width="340dp"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:layout_height="match_parent"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/textInputLayoutIDNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/id_number"
+        app:boxStrokeColor="@color/white"
+        android:textColorHint="@color/white"
+        app:boxStrokeErrorColor="@color/red"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:maxLines="1"
+        app:startIconDrawable="@drawable/id28"
+        app:startIconTint="@color/white"
+        app:endIconTint="@color/white"
+        app:hintTextColor="@color/white"
+        app:helperTextTextColor="@color/red"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutSurname"
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_marginTop="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/IDNumber"
+            android:layout_width="340dp"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:layout_height="match_parent"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/textInputLayoutAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/address"
+        app:boxStrokeColor="@color/white"
+        android:textColorHint="@color/white"
+        app:boxStrokeErrorColor="@color/red"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:maxLines="1"
+        app:startIconDrawable="@drawable/home24"
+        app:startIconTint="@color/white"
+        app:endIconTint="@color/white"
+        app:hintTextColor="@color/white"
+        app:helperTextTextColor="@color/red"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutIDNumber"
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_marginTop="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Address"
+            android:layout_width="340dp"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:layout_height="match_parent"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/textInputLayoutSuburb"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:hint="@string/suburb"
+        app:boxStrokeColor="@color/white"
+        android:textColorHint="@color/white"
+        app:boxStrokeErrorColor="@color/red"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="32dp"
+        android:maxLines="1"
+        app:startIconDrawable="@drawable/suburb32"
+        app:startIconTint="@color/white"
+        app:endIconTint="@color/white"
+        app:hintTextColor="@color/white"
+        app:helperTextTextColor="@color/red"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutAddress"
+        app:layout_constraintVertical_bias="1.0">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Suburb"
+            android:layout_width="340dp"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:layout_height="match_parent"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/textInputLayoutCellNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/phone_number"
+        app:boxStrokeColor="@color/white"
+        android:textColorHint="@color/white"
+        app:boxStrokeErrorColor="@color/red"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="32dp"
+        android:maxLines="1"
+        app:startIconDrawable="@drawable/smartphone34"
+        app:startIconTint="@color/white"
+        app:endIconTint="@color/white"
+        app:hintTextColor="@color/white"
+        app:helperTextTextColor="@color/red"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.478"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutSuburb"
+        app:layout_constraintVertical_bias="1.0">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/CellNumber"
+            android:layout_width="340dp"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:layout_height="match_parent"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

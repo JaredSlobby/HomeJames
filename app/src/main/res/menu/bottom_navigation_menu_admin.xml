@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/Home"
+        android:enabled="true"
+        android:icon="@drawable/clubs"
+        android:title="@string/home"/>
+    <item
+        android:id="@+id/Drivers"
+        android:enabled="true"
+        android:icon="@drawable/clubs"
+        android:title="@string/drivers"/>
+
+    <item
+        android:id="@+id/Complains"
+        android:enabled="true"
+        android:icon="@drawable/clubs"
+        android:title="@string/complaints"/>
+</menu>
