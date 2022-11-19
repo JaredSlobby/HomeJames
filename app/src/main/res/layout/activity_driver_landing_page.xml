@@ -13,7 +13,7 @@
         android:layout_gravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_navigation_menu_driver"
-        app:backgroundTint="#F7770F"
+        app:backgroundTint="#fd8d3c"
         app:itemTextColor="@color/white"
         app:itemIconTint="@color/white"
         />

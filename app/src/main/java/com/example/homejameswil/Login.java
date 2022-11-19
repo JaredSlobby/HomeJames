@@ -143,10 +143,13 @@ public class Login extends AppCompatActivity
                                             }
                                             else if(document.getId().matches(uid) && document.getString("Status").matches("Client"))
                                             {
-                                                Intent intent
-                                                        = new Intent(Login.this,
-                                                        MainActivity.class);
-
+                                                Intent intent = new Intent(Login.this, MainActivity.class);
+                                                //intent.putExtra("UID", uid);
+                                                startActivity(intent);
+                                            }
+                                            else if(document.getId().matches(uid) && document.getString("Status").matches("Admin"))
+                                            {
+                                                Intent intent = new Intent(Login.this, Admin_Dashboard.class);
                                                 //intent.putExtra("UID", uid);
                                                 startActivity(intent);
                                             }
@@ -159,10 +162,10 @@ public class Login extends AppCompatActivity
                                 }
                             });
 
-                } else {
-                    Toast.makeText(Login.this,
-                            "Please Check Your login Credentials",
-                            Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(Login.this, "Please Check Your login Credentials", Toast.LENGTH_SHORT).show();
                 }
 
             });

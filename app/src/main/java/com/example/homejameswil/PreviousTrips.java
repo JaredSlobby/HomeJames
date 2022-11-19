@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +28,7 @@ public class PreviousTrips extends Fragment
     View view;
     TextView  TripTimes, ReportDriver;
     FirebaseUser user;
-    String uid;
+    String uid, DriverUID, docID;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -58,7 +60,9 @@ public class PreviousTrips extends Fragment
             //testing.setText(bundle.getString("DriverUID"));
             TripTimes.setText(bundle.getString("TimeOfPickUp"));
 
-            String DriverUID = bundle.getString("DriverUID");
+            DriverUID = bundle.getString("DriverUID");
+            docID = bundle.getString("docID");
+
 
             //Check database for DriverUID
             db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
@@ -92,7 +96,18 @@ public class PreviousTrips extends Fragment
             @Override
             public void onClick(View v)
             {
-                getFragmentManager().beginTransaction().replace(R.id.frameLayout, new ReportDriver()).commit();
+                Bundle bundleReport = new Bundle();
+                bundleReport.putString("docID", docID);
+                bundleReport.putString("DriverUID", DriverUID);
+
+
+                Fragment fragment = new ReportDriver();
+                fragment.setArguments(bundleReport);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.PreviousTripsFragment, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         });
     }
