@@ -3,24 +3,38 @@ package com.example.homejameswil;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+
+import com.google.android.gms.maps.Projection;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.maps.android.SphericalUtil;
 import com.twilio.Twilio;
+
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,6 +89,7 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.twilio.Twilio;
 import com.twilio.converter.Promoter;
 import com.twilio.rest.api.v2010.account.Message;
@@ -95,8 +110,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
-public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, RoutingListener
-{
+public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, RoutingListener {
     private GoogleMap map;
     private ActivityDriverMapsBinding binding;
     private static String TAG = "DriverMaps";
@@ -105,8 +119,6 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
     protected LatLng CustomerHome = null;
     protected LatLng end = null;
     private boolean PickedUp = false;
-
-
 
 
     private String Units = "metric";
@@ -147,15 +159,14 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
     String uid;
 
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityDriverMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -163,16 +174,33 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap)
-    {
+    public void onMapReady(GoogleMap googleMap) {
         googleMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json)));
         map = googleMap;
         getMyLocation();
         getDriverOrderLocation();
-        Log.d(TAG, "onMapReady: " + start + "End: "+ end);
+        Log.d(TAG, "onMapReady: " + start + "End: " + end);
         getCustomerHome();
 
+        Drawable circleDrawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_up_arrow_circle);
+        //BitmapDescriptor markerIcon = getMarkerIconFromDrawable(circleDrawable, 150, 150);
 
+        //double bearing = bearingBetweenLocations()
+
+        //hide current location icon
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.setMyLocationEnabled(true);
 
 
     }
@@ -180,12 +208,9 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
     // function to find Routes.
     public void Findroutes(LatLng Start, LatLng End)
     {
-        if (Start == null || End == null)
-        {
+        if (Start == null || End == null) {
             Toast.makeText(DriverMaps.this, "Unable to get location", Toast.LENGTH_LONG).show();
-        }
-        else
-        {
+        } else {
             Routing routing = new Routing.Builder().travelMode(AbstractRouting.TravelMode.DRIVING).withListener(this).alternativeRoutes(true).waypoints(Start, End).key("AIzaSyANNxd0f6zOf_VvWwI-B3bY0rOblhUW410").build();
             routing.execute();
 
@@ -194,28 +219,24 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
 
     //Routing call back functions.
     @Override
-    public void onRoutingFailure(RouteException e)
-    {
+    public void onRoutingFailure(RouteException e) {
         View parentLayout = findViewById(android.R.id.content);
         Snackbar snackbar = Snackbar.make(parentLayout, e.toString(), Snackbar.LENGTH_LONG);
         snackbar.show();
     }
 
     @Override
-    public void onRoutingStart()
-    {
+    public void onRoutingStart() {
         Log.d(TAG, "Routing Started");
         map.clear();
     }
 
     //If Route finding success..
 
-    public void onRoutingSuccess(ArrayList<Route> route, int shortestRouteIndex)
-    {
+    public void onRoutingSuccess(ArrayList<Route> route, int shortestRouteIndex) {
         CameraUpdate center = CameraUpdateFactory.newLatLng(start);
         CameraUpdate zoom = CameraUpdateFactory.zoomTo(16);
-        if (polylines != null)
-        {
+        if (polylines != null) {
             polylines.clear();
         }
         PolylineOptions polyOptions = new PolylineOptions();
@@ -224,10 +245,8 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
 
         polylines = new ArrayList<>();
         //add route(s) to the map using polyline
-        for (int i = 0; i < route.size(); i++)
-        {
-            if (i == shortestRouteIndex)
-            {
+        for (int i = 0; i < route.size(); i++) {
+            if (i == shortestRouteIndex) {
                 polyOptions.color(getResources().getColor(R.color.homeJames));
                 polyOptions.width(7);
                 polyOptions.addAll(route.get(shortestRouteIndex).getPoints());
@@ -236,9 +255,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                 int k = polyline.getPoints().size();
                 polylineEndLatLng = polyline.getPoints().get(k - 1);
                 polylines.add(polyline);
-            }
-            else
-            {
+            } else {
 
             }
         }
@@ -252,9 +269,16 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                 .target(start)      // Sets the center of the map to Mountain View
                 .zoom(16)                   // Sets the zoom
                 .bearing(90)                // Sets the orientation of the camera to east
-                .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+                .tilt(30)// Sets the tilt of the camera to 30 degrees
                 .build();                   // Creates a CameraPosition from the builder
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+
+
+
+
+
+
 
     }
 
@@ -403,16 +427,23 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                 Log.d(TAG, "MyLocation: TEST2.0" + start);
 
                 LatLng ltlng = new LatLng(location.getLatitude(), location.getLongitude());
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(ltlng, 16f);
+
+
+
+
+
 
                 CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(start)      // Sets the center of the map to Mountain View
+                        .target(start)
+                        // Sets the center of the map to Mountain View
                         .zoom(17)                   // Sets the zoom
                         .bearing(location.getBearing())                // Sets the orientation of the camera to east
                         .tilt(30)
                         // Sets the tilt of the camera to 30 degrees
                         .build();                   // Creates a CameraPosition from the builder
                 map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                SphericalUtil.computeOffsetOrigin(ltlng, 100, 90);
 
                 if (myLocationFound == false)
                 {
@@ -615,7 +646,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
         RequestBody body = new FormBody.Builder()
                 .add("From", "+17123723289")
                 .add("To", "+27765663773")
-                .add("Body", "Your driver is near POES")
+                .add("Body", "Your driver is nearby!")
                 .build();
 
         Request request = new Request.Builder()
@@ -719,6 +750,66 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                 thread.start();
             }
         });
+    }
+    //Cursor Parking for David
+    //[                         ]
+    //[                         ]
+    //[                         ]
+    //[                         ]
+    //[                         ]
+
+
+    private double bearingBetweenLocations(LatLng latLng1, LatLng latLng2) {
+
+        double PI = 3.14159;
+        double lat1 = latLng1.latitude * PI / 180;
+        double long1 = latLng1.longitude * PI / 180;
+        double lat2 = latLng2.latitude * PI / 180;
+        double long2 = latLng2.longitude * PI / 180;
+
+
+        double dLon = (long2 - long1);
+
+        double y = Math.sin(dLon) * Math.cos(lat2);
+        double x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1)
+                * Math.cos(lat2) * Math.cos(dLon);
+
+        double brng = Math.atan2(y, x);
+
+        brng = Math.toDegrees(brng);
+        brng = (brng + 360) % 360;
+
+        return brng;
+    }
+
+    private boolean isMarkerRotating = false;
+
+    private void rotateMarker(final Marker marker, final float toRotation)
+    {
+        final Handler handler = new Handler();
+        final long start = SystemClock.uptimeMillis();
+        final float startRotation = marker.getRotation();
+        final long duration = 1000;
+
+        final Interpolator interpolator = new LinearInterpolator();
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                long elapsed = SystemClock.uptimeMillis() - start;
+                float t = interpolator.getInterpolation((float) elapsed / duration);
+
+                float rot = t * toRotation + (1 - t) * startRotation;
+
+                marker.setRotation(-rot > 180 ? rot / 2 : rot);
+                if (t < 1.0) {
+                    // Post again 16ms later.
+                    handler.postDelayed(this, 16);
+                }
+            }
+        });
+
     }
 
 

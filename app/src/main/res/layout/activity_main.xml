@@ -15,9 +15,8 @@
         app:backgroundTint="#fd8d3c"
         app:itemTextColor="@color/white"
         app:itemIconTint="@color/white"
-
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_navigation_menu"/>
+        app:menu="@menu/bottom_navigation_menu" />
 
     <FrameLayout
         android:layout_width="match_parent"

@@ -361,7 +361,7 @@ public class Fragment_rides extends Fragment
 
 
         //Read from database specifying with collection
-        db.collection("UserHome").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
         {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task)

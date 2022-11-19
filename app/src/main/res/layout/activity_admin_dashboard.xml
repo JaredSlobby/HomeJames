@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Admin_Dashboard">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_admin"
@@ -15,9 +15,8 @@
         app:backgroundTint="#fd8d3c"
         app:itemTextColor="@color/white"
         app:itemIconTint="@color/white"
-
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_navigation_menu_admin"/>
+        app:menu="@menu/bottom_navigation_menu_admin" />
 
     <FrameLayout
         android:layout_width="match_parent"
