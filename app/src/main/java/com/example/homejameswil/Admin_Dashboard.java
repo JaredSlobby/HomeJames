@@ -36,8 +36,8 @@ public class Admin_Dashboard extends AppCompatActivity
                     case R.id.Drivers:
                         replaceFragment(new Admin_Drivers());
                         return true;
-                    case R.id.Account:
-                        replaceFragment(new AccountDetails());
+                    case R.id.Reports:
+                        replaceFragment(new AdminReports());
                         return true;
                 }
                 return false;
@@ -60,13 +60,12 @@ public class Admin_Dashboard extends AppCompatActivity
         fragmentTransaction.replace(R.id.frameLayout, landingPage);
         fragmentTransaction.commit();
     }
-    private void replaceFragment(AccountDetails accountDetails)
+
+    private void replaceFragment(AdminReports adminReports)
     {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, accountDetails);
+        fragmentTransaction.replace(R.id.frameLayout, adminReports);
         fragmentTransaction.commit();
     }
-
-
 }
