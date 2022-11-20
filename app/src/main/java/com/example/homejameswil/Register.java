@@ -28,7 +28,7 @@ public class Register extends AppCompatActivity
 {
 
     Button btn2_signup;
-    EditText user_name, pass_word;
+    EditText user_name, pass_word,txtName, txtSurname, txtIDNumber, txtCellNumber, txtStreetName, txtSuburb, txtEmail;
     FirebaseAuth mAuth;
 
     FirebaseUser user;
@@ -46,6 +46,13 @@ public class Register extends AppCompatActivity
 
         user_name = findViewById(R.id.email);
         pass_word = findViewById(R.id.password);
+        txtName = findViewById(R.id.Name);
+        txtSurname = findViewById(R.id.Surname);
+        txtIDNumber = findViewById(R.id.IDNumber);
+        txtCellNumber = findViewById(R.id.CellNumber);
+        txtStreetName = findViewById(R.id.Address);
+        txtSuburb = findViewById(R.id.Suburb);
+        txtEmail = findViewById(R.id.email);
 
         btn2_signup = findViewById(R.id.btnRegister);
         mAuth = FirebaseAuth.getInstance();
@@ -96,6 +103,12 @@ public class Register extends AppCompatActivity
                             Map<String, Object> user = new HashMap<>();
                             user.put("Status", "Client");
                             user.put("Email", user_name.getText().toString());
+                            user.put("UserName", txtName.getText().toString());
+                            user.put("UserSurname", txtSurname.getText().toString());
+                            user.put("UserIDNumber", txtIDNumber.getText().toString());
+                            user.put("UserStreetName", txtStreetName.getText().toString());
+                            user.put("UserSuburb", txtSuburb.getText().toString());
+                            user.put("UserCellNumber", txtCellNumber.getText().toString());
 
                             db.collection("Users").document(uid).set(user).addOnSuccessListener(new OnSuccessListener<Void>()
                                     {

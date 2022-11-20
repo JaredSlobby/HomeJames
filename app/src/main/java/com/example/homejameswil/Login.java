@@ -17,12 +17,18 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.onesignal.OneSignal;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Login extends AppCompatActivity
 {
     private EditText user_name, pass_word;
     FirebaseAuth mAuth;
     FirebaseUser user;
     String uid;
+    private static final String ONESIGNAL_APP_ID = "556bf015-31aa-42d9-a448-4642ce2fb4b7";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -31,6 +37,16 @@ public class Login extends AppCompatActivity
         setContentView(R.layout.activity_login);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+        // Enable verbose OneSignal logging to debug issues if needed.
+        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
+
+        // OneSignal Initialization
+        OneSignal.initWithContext(getApplicationContext());
+        OneSignal.setAppId(ONESIGNAL_APP_ID);
+
+
 
         user_name = findViewById(R.id.email);
         pass_word = findViewById(R.id.password);
@@ -64,8 +80,12 @@ public class Login extends AppCompatActivity
                                                                        }
                                                                        else if(document.getId().matches(firebaseAuth.getCurrentUser().getUid()) && document.getString("Status").matches("Client"))
                                                                        {
+                                                                           setExternalUserID(firebaseAuth.getCurrentUser().getUid());
                                                                            Intent intent = new Intent(Login.this, MainActivity.class);
                                                                            startActivity(intent);
+                                                                           Log.d("TAG", "External User ID: " + firebaseAuth.getCurrentUser().getUid());
+
+
                                                                        }
                                                                        else if (document.getId().matches(firebaseAuth.getCurrentUser().getUid()) && document.getString("Status").matches("Admin"))
                                                                        {
@@ -144,8 +164,9 @@ public class Login extends AppCompatActivity
                                             else if(document.getId().matches(uid) && document.getString("Status").matches("Client"))
                                             {
                                                 Intent intent = new Intent(Login.this, MainActivity.class);
-                                                //intent.putExtra("UID", uid);
+
                                                 startActivity(intent);
+
                                             }
                                             else if(document.getId().matches(uid) && document.getString("Status").matches("Admin"))
                                             {
@@ -172,4 +193,43 @@ public class Login extends AppCompatActivity
         });
         btn_sign.setOnClickListener(v -> startActivity(new Intent(Login.this, Register.class)));
     }
+
+
+    private void setExternalUserID(String uid)
+    {
+        String externalUserId = uid; // You will supply the external user id to the OneSignal SDK
+
+        Log.d("TAG", "External User ID Inside Method " + externalUserId);
+
+
+// Setting External User Id with Callback Available in SDK Version 4.0.0+
+        OneSignal.setExternalUserId(externalUserId, new OneSignal.OSExternalUserIdUpdateCompletionHandler() {
+            @Override
+            public void onSuccess(JSONObject results)
+            {
+                try {
+                    if (results.has("push") && results.getJSONObject("push").has("success")) {
+                        boolean isPushSuccess = results.getJSONObject("push").getBoolean("success");
+                        OneSignal.onesignalLog(OneSignal.LOG_LEVEL.VERBOSE, "Set external user id for push status: " + isPushSuccess);
+                        Log.d("TAG", "ExternalUserID = " + externalUserId);
+                        Toast.makeText(getApplicationContext(), "ExternalUserID = " + externalUserId, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(OneSignal.ExternalIdError error)
+            {
+                // The results will contain channel failure statuses
+                // Use this to detect if external_user_id was not set and retry when a better network connection is made
+                OneSignal.onesignalLog(OneSignal.LOG_LEVEL.VERBOSE, "Set external user id done with error: " + error.toString());
+            }
+        });
+    }
+
+
 }

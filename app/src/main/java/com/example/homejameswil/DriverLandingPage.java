@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,6 +30,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.onesignal.OSInAppMessageAction;
+import com.onesignal.OneSignal;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 
@@ -42,14 +48,47 @@ public class DriverLandingPage extends Fragment
     TextView welcome;
     String TAG = "Firebase";
     TextView workingHours;
+    private static final String ONESIGNAL_APP_ID = "556bf015-31aa-42d9-a448-4642ce2fb4b7";
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_driver_landing_page, container, false);
+
+        // Enable verbose OneSignal logging to debug issues if needed.
+        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
+
+        // OneSignal Initialization
+        OneSignal.initWithContext(getContext());
+        OneSignal.setAppId(ONESIGNAL_APP_ID);
+
+        OneSignal.promptForPushNotifications();
+
+        //OneSignal.sendTag("Driver", "True");
+
+        //OneSignal.addTrigger("User_ID", "True");
+
+
+
+
+        OneSignal.setInAppMessageClickHandler(new OneSignal.OSInAppMessageClickHandler()
+        {
+            @Override
+            public void inAppMessageClicked(OSInAppMessageAction result)
+            {
+                //Toast.makeText(getContext(), "In App Message Clicked!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+
         Welcome();
         LocationDriver();
+
+
         return view;
     }
 
@@ -186,4 +225,6 @@ public class DriverLandingPage extends Fragment
                 break;
         }
     }
+
+
 }

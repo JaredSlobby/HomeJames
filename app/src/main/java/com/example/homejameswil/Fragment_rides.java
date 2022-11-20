@@ -13,8 +13,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
+import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,10 +50,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -116,8 +119,6 @@ public class Fragment_rides extends Fragment
     String cUID;
     String cStatus;
     String cName;
-
-
     View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -257,10 +258,8 @@ public class Fragment_rides extends Fragment
                 Log.d(TAG, "Distance JSON: " + distanceString);
                 Log.d(TAG, "Duration JSON: " + durationString);
 
-
                 bottomSheetDialog.setContentView(bottomSheetView);
                 bottomSheetDialog.show();
-
 
                 Button btn = bottomSheetView.findViewById(R.id.btnTrip);
                 btn.setOnClickListener(new View.OnClickListener()
@@ -268,23 +267,21 @@ public class Fragment_rides extends Fragment
                     @Override
                     public void onClick(View view)
                     {
-
                         Intent intent = new Intent(getActivity(), DriverMaps.class);
                         startActivity(intent);
                         user.getUid();
 
                         //Read from database specifying with collection
-                        db.collection("Orders")
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+                        {
                                     @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task)
+                                    {
                                         if (task.isSuccessful()) {
                                             for (QueryDocumentSnapshot document : task.getResult())
                                             {
                                                 if(document.getId().matches(DocID))
                                                 {
-
                                                     cDate = document.getString("Date");
                                                     cLatitude = document.getDouble("Latitude");
                                                     cLongitude = document.getDouble("Longitude");
@@ -341,6 +338,29 @@ public class Fragment_rides extends Fragment
                                         Log.w(TAG, "Error adding document", e);
                                     }
                                 });
+                        /*try
+                        {
+                            Handler h = new Handler();
+                            h.post(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    try {
+                                        sendNotification();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
+
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }*/
+
                         bottomSheetDialog.dismiss();
                     }
                 });
@@ -772,6 +792,10 @@ public class Fragment_rides extends Fragment
             }
         });
     }
+
+
+
+
 
 
 

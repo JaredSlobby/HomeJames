@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,6 +34,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.onesignal.OneSignal;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 
@@ -48,19 +53,39 @@ public class LandingPage extends Fragment
     TextView welcome, workingHours;
     FirebaseUser user;
     Button btnPinMyHome;
+    private static final String ONESIGNAL_APP_ID = "556bf015-31aa-42d9-a448-4642ce2fb4b7";
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         view = inflater.inflate(R.layout.fragment_landing_page, container, false);
-        location();
         Welcome();
+        location();
+
+
+
+        // Enable verbose OneSignal logging to debug issues if needed.
+        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
+
+        // OneSignal Initialization
+        OneSignal.initWithContext(getContext());
+        OneSignal.setAppId(ONESIGNAL_APP_ID);
+
+        OneSignal.promptForPushNotifications();
+
+
+        //OneSignal.addTrigger("User_ID", "True");
+
+
         // Return view
+        //setExternalUserID(user.getUid());
         return view;
     }
 
     private void location()
     {
-
         // Initialize map fragment
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
@@ -129,13 +154,11 @@ public class LandingPage extends Fragment
 
 
 
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         //Read from database specifying with collection
-        db.collection("Users")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -202,7 +225,13 @@ public class LandingPage extends Fragment
         }
 
 
+
     }
+
+
+
+
+
 
 
 

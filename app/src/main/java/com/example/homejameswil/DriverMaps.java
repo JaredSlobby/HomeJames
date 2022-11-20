@@ -86,6 +86,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +100,7 @@ import com.twilio.type.PhoneNumber;
 
 import java.net.URI;
 import java.math.BigDecimal;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import okhttp3.Call;
@@ -518,6 +522,10 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                         try
                         {
                             //sendSms();
+
+                            sendNotification();
+
+
                             InsideCircle();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -812,6 +820,66 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
 
     }
 
+    private void sendNotification() throws IOException
+    {
+        try {
+            String jsonResponse;
+
+            URL url = new URL("https://onesignal.com/api/v1/notifications");
+            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            con.setUseCaches(false);
+            con.setDoOutput(true);
+            con.setDoInput(true);
+
+            con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            con.setRequestProperty("Authorization", "Basic ZWVkOTViOTctYTlmOC00MTQzLTk0MGYtMmI0YzlkNGQxNmE2");
+            con.setRequestMethod("POST");
+
+            String strJsonBody = "{"
+                    +   "\"app_id\": \"556bf015-31aa-42d9-a448-4642ce2fb4b7\","
+                    +   "\"include_external_user_ids\": " + "[\"" + clientUID.get(0) + "\"],"
+                    +   "\"channel_for_external_user_ids\": \"push\","
+                    +   "\"data\": {\"foo\": \"bar\"},"
+                    +   "\"contents\": {\"en\": \"You have a driver!\"}"
+                    + "}";
+
+
+            Log.d("TAG","strJsonBody:\n" + strJsonBody);
+
+            byte[] sendBytes = strJsonBody.getBytes("UTF-8");
+            con.setFixedLengthStreamingMode(sendBytes.length);
+
+            OutputStream outputStream = con.getOutputStream();
+            outputStream.write(sendBytes);
+            Log.d("TAG","outputStream:\n" + outputStream);
+            Log.d("TAG", "sendNotification: " + sendBytes);
+
+            int httpResponse = con.getResponseCode();
+            Log.d("TAG","httpResponse: " + httpResponse);
+
+            //See error log from httpResponse
+
+
+
+            if (  httpResponse >= HttpURLConnection.HTTP_OK
+                    && httpResponse < HttpURLConnection.HTTP_BAD_REQUEST)
+            {
+                Scanner scanner = new Scanner(con.getInputStream(), "UTF-8");
+                jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+                scanner.close();
+            }
+            else
+            {
+                Scanner scanner = new Scanner(con.getErrorStream(), "UTF-8");
+                jsonResponse = scanner.useDelimiter("\\A").hasNext() ? scanner.next() : "";
+                scanner.close();
+            }
+            Log.d("TAG","jsonResponse:\n" + jsonResponse);
+
+        } catch(Throwable t) {
+            t.printStackTrace();
+        }
+    }
 
 
 

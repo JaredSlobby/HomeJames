@@ -62,7 +62,6 @@ public class EditPersonalDetails extends Fragment
 
     private void RetrieveUserDetails()
     {
-
         txtName = view.findViewById(R.id.Name);
         txtSurname = view.findViewById(R.id.Surname);
         txtIDNumber = view.findViewById(R.id.IDNumber);
