@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -40,6 +42,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
+import java.util.Map;
 
 
 public class LandingPage extends Fragment
@@ -64,8 +67,6 @@ public class LandingPage extends Fragment
         Welcome();
         location();
 
-
-
         // Enable verbose OneSignal logging to debug issues if needed.
         OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
 
@@ -75,9 +76,7 @@ public class LandingPage extends Fragment
 
         OneSignal.promptForPushNotifications();
 
-
         //OneSignal.addTrigger("User_ID", "True");
-
 
         // Return view
         //setExternalUserID(user.getUid());
@@ -97,8 +96,7 @@ public class LandingPage extends Fragment
             @Override
             public void onMapReady(GoogleMap googleMap)
             {
-                boolean success = googleMap.setMapStyle(new MapStyleOptions(getResources()
-                        .getString(R.string.style_json)));
+                boolean success = googleMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json)));
                 if (!success)
                 {
                     Log.e(TAG, "Style parsing failed.");
@@ -227,14 +225,6 @@ public class LandingPage extends Fragment
 
 
     }
-
-
-
-
-
-
-
-
 
 
 

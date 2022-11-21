@@ -164,7 +164,8 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         binding = ActivityDriverMapsBinding.inflate(getLayoutInflater());
@@ -304,6 +305,8 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
             return;
         }
         map.setMyLocationEnabled(true);
+        //Get location every second
+
         //Get my current location
 
         map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener()
@@ -440,9 +443,9 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(start)
                         // Sets the center of the map to Mountain View
-                        .zoom(17)                   // Sets the zoom
+                        .zoom(20)                   // Sets the zoom
                         .bearing(location.getBearing())                // Sets the orientation of the camera to east
-                        .tilt(30)
+                        .tilt(55)
                         // Sets the tilt of the camera to 30 degrees
                         .build();                   // Creates a CameraPosition from the builder
                 map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));

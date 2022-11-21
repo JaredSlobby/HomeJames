@@ -1,6 +1,7 @@
 package com.example.homejameswil;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import com.onesignal.OneSignal;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Driver;
 import java.util.Calendar;
 
 public class DriverLandingPage extends Fragment
@@ -48,6 +50,7 @@ public class DriverLandingPage extends Fragment
     TextView welcome;
     String TAG = "Firebase";
     TextView workingHours;
+    Boolean activeTrip = false;
     private static final String ONESIGNAL_APP_ID = "556bf015-31aa-42d9-a448-4642ce2fb4b7";
 
 
@@ -66,9 +69,12 @@ public class DriverLandingPage extends Fragment
 
         OneSignal.promptForPushNotifications();
 
+        checkActiveTrip();
+
         //OneSignal.sendTag("Driver", "True");
 
         //OneSignal.addTrigger("User_ID", "True");
+
 
 
 
@@ -91,6 +97,9 @@ public class DriverLandingPage extends Fragment
 
         return view;
     }
+
+
+
 
     private void Welcome()
     {
@@ -125,6 +134,25 @@ public class DriverLandingPage extends Fragment
                         }
                     }
                 });
+    }
+
+    Boolean didLoadActivity = false;
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if(didLoadActivity)
+        {
+            if (activeTrip)
+            {
+                Intent intent = new Intent(getContext(), DriverMaps.class);
+                startActivity(intent);
+            }
+        }
+        else
+        {
+            didLoadActivity = true;
+        }
     }
 
 
@@ -224,6 +252,34 @@ public class DriverLandingPage extends Fragment
                 workingHours.setText(MondayToSaturday);
                 break;
         }
+    }
+
+
+    private void checkActiveTrip()
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task)
+            {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult())
+                    {
+                        Log.d(TAG, "DRIVERS ID" + user.getUid());
+                        if (document.getString("DriverUID").matches(user.getUid()) && document.getString("Status").matches("Active"))
+                        {
+                            Intent intent = new Intent(getContext(), DriverMaps.class);
+                            startActivity(intent);
+                            Log.d(TAG, "DRIVERS ID in IF statement" + user.getUid());
+                            activeTrip = true;
+                        }
+
+                    }
+                } else {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
+            }
+        });
     }
 
 
