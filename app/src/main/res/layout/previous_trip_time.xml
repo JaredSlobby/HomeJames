@@ -7,6 +7,7 @@
     xmlns:card_view="http://schemas.android.com/tools"
     app:cardCornerRadius="15dp"
     app:cardUseCompatPadding="true"
+    app:cardElevation="5dp"
     card_view:cardCornerRAdius="5dp"
     android:backgroundTint="@color/homeJames">
     <LinearLayout
@@ -20,7 +21,7 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:padding="3dp"
-                android:src="@drawable/smartphone"
+                android:src="@drawable/clock"
                 android:layout_width="35dp"
                 android:layout_height="35dp"/>
             <TextView
@@ -32,6 +33,16 @@
                 android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+            <TextView
+                android:text="Date"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:layout_gravity="center|end"
+                android:gravity="end"
+                android:layout_marginEnd="10dp"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
     <LinearLayout
@@ -41,7 +52,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:text=""
+            android:text="@string/pickup_time"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -58,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:text=""
+                android:text="@string/dropoff_time"
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:textSize="18sp"

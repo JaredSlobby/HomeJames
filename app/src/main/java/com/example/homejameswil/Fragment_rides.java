@@ -309,7 +309,6 @@ public class Fragment_rides extends Fragment
 
                         Log.d(TAG, "Driver UID: " + uid);
 
-
                         user.put("Date", cDate );
                         user.put("Latitude", cLatitude );
                         user.put("Longitude", cLongitude );
@@ -321,7 +320,7 @@ public class Fragment_rides extends Fragment
                         user.put("SMS", "No");
 
                         //Writing to Firestore specifying collection path with custom set Document reference
-                        db.collection("Orders").document(DocID).set(user).addOnSuccessListener(new OnSuccessListener<Void>()
+                        db.collection("Orders").document(DocID).update(user).addOnSuccessListener(new OnSuccessListener<Void>()
                                 {
                                     @Override
                                     public void onSuccess(Void aVoid)
@@ -408,9 +407,6 @@ public class Fragment_rides extends Fragment
                                 {
                                     e.printStackTrace();
                                 }
-
-
-
                                 Log.d(TAG,"Saved Latitude: " + latitude + " Saved Longitude: " + longitude);
                             }
                     }
@@ -422,41 +418,6 @@ public class Fragment_rides extends Fragment
             }
         });
     }
-
-    /*private void SaveUserHome()
-    {
-        //Connection to database
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        // Get logged in user UID
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        uid = user.getUid();
-
-        //Creating user object
-        //Setting text boxes to user object defining node names
-        Map<String, Object> user = new HashMap<>();
-        user.put("Latitude", );
-        user.put("Longitude", );
-
-
-        //Writing to Firestore specifying collection path with custom set Document reference
-        db.collection("UserHome").document(uid)
-                .set(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>()
-                {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot added with ID:" );
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
-    }*/
-
 
 
     @SuppressLint("MissingPermission")

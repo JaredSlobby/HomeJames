@@ -90,7 +90,9 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.twilio.Twilio;
@@ -124,6 +126,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
     protected LatLng CustomerHome = null;
     protected LatLng end = null;
     private boolean radius = false;
+    String originAddress;
 
 
     private String Units = "metric";
@@ -520,6 +523,9 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                         try {
                             Response response = client.newCall(request).execute();
                             JSONObject jsonObject = new JSONObject(response.body().string());// parse response into json object
+
+                            JSONArray destinationAddresses = jsonObject.getJSONArray("origin_addresses");
+
                             //Pull our duration and distance from the json object
                             JSONArray rows = jsonObject.getJSONArray("rows");
                             JSONObject elements = rows.getJSONObject(0);
@@ -531,6 +537,13 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                             distanceStringHome = distanceObject.getString("text");
                             durationStringHome = durationObject.getString("text");
                             Log.d(TAG, "Distance Home: " + distanceStringHome + " Duration Home: " + durationStringHome);
+
+                            originAddress = destinationAddresses.toString();
+                            originAddress = originAddress.replace("[", "");
+                            originAddress = originAddress.replace("]", "");
+                            originAddress = originAddress.replace("\"", "");
+
+
                             //Update UI using method
                             runOnUiThread(new Runnable()
                             {
@@ -719,7 +732,6 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                             {
                                 end = new LatLng(clientLatitude.get(0), clientLongitude.get(0));
                                 CustomerHome = new LatLng(clientHomeLatitude.get(0), clientHomeLongitude.get(0));
-
                                 Findroutes(start, end);
                             }
 
@@ -742,7 +754,8 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                                 InsideCircle(CustomerHome);
                                                 Log.d("TAG", start + " Inside Circle" + CustomerHome);
 
-                                            } catch (Exception e)
+                                            }
+                                            catch (Exception e)
                                             {
                                                 e.printStackTrace();
                                             }
@@ -757,18 +770,11 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                     e.printStackTrace();
                                 }
                             }
-
-                            /*map.addCircle(new CircleOptions()
-                                    .center(end)
-                                    .radius(500)
-                                    .strokeColor(Color.RED)
-                                    .fillColor(Color.RED));*/
                             if(document.getString("SMS").matches("Yes"))
                             {
                                 try
                                 {
                                     Thread thread1 = new Thread(new Runnable()
-
                                     {
                                         @Override
                                         public void run()
@@ -792,9 +798,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                     e.printStackTrace();
                                 }
                             }
-
-
-                                if(document.getString("SMS").matches("No"))
+                            if(document.getString("SMS").matches("No"))
                             {
                                 try
                                 {
@@ -816,6 +820,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                     });
                                     thread.start();
                                     document.getReference().update("SMS", "Yes");
+
                                 }
                                 catch (Exception e)
                                 {
@@ -836,7 +841,6 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
 
     private void updateOrder(String Update)
     {
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         //Read from database specifying with collection
         db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
@@ -852,6 +856,25 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                         if(document.getString("DriverUID").matches(user.getUid()) && (document.getString("Status").matches("Active") || document.getString("Status").matches("PickedUp")))
                         {
                             document.getReference().update("Status", Update);
+
+                            if(Update.matches("PickedUp"))
+                            {
+                                //Get current time
+                                Calendar calendar = Calendar.getInstance();
+                                SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm");
+                                String strDate = mdformat.format(calendar.getTime());
+                                document.getReference().update("TimeOfPickUp", strDate);
+                                document.getReference().update("PickUpLocation", originAddress);
+                            }
+                            if (Update.matches("Completed"))
+                            {
+                                //Get current time
+                                Calendar calendar = Calendar.getInstance();
+                                SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm");
+                                String strDate = mdformat.format(calendar.getTime());
+
+                                document.getReference().update("TimeDroppedOff", strDate);
+                            }
                         }
                     }
                 }
@@ -862,6 +885,4 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
             }
         });
     }
-
-
 }

@@ -175,7 +175,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             {
                                 if(document.getId().matches(uid) && document.getString("Status").matches("Client"))
                                 {
-                                    cName.add(document.get("Name").toString());
+                                    cName.add(document.get("UserName").toString());
                                     cHomeLatitude.add(document.getDouble("HomeLatitude"));
                                     cHomeLongitude.add(document.getDouble("HomeLongitude"));
                                 }
@@ -383,6 +383,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 user.put("Name", cName.get(0));
                 user.put("HomeLatitude", cHomeLatitude.get(0));
                 user.put("HomeLongitude", cHomeLongitude.get(0));
+                user.put("DriverUID", "");
                 user.put("SMS", "No");
                 user.put("PickUpLocation", originAddress);
 

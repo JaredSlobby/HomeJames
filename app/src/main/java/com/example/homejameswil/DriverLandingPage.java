@@ -247,7 +247,7 @@ public class DriverLandingPage extends Fragment
     }
 
 
-    private void checkActiveTrip()
+    private boolean checkActiveTrip()
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
@@ -259,7 +259,7 @@ public class DriverLandingPage extends Fragment
                     for (QueryDocumentSnapshot document : task.getResult())
                     {
                         Log.d(TAG, "DRIVERS ID" + user.getUid());
-                        if (document.getString("DriverUID").matches(user.getUid()) && (document.getString("Status").matches("Active") || document.getString("Status").matches("PickedUp")))
+                        if (document.getString("DriverUID").matches(user.getUid()) && (document.getString("Status").matches("Active") && document.getString("Status").matches("PickedUp")))
                         {
                             Intent intent = new Intent(getContext(), DriverMaps.class);
                             startActivity(intent);
@@ -270,6 +270,7 @@ public class DriverLandingPage extends Fragment
                         {
                             activeTrip = false;
                         }
+
                     }
                 }
                 else
@@ -278,5 +279,6 @@ public class DriverLandingPage extends Fragment
                 }
             }
         });
+        return activeTrip;
     }
 }

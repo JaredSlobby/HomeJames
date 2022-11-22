@@ -8,6 +8,7 @@
     app:cardCornerRadius="15dp"
     app:cardUseCompatPadding="true"
     card_view:cardCornerRAdius="5dp"
+    app:cardElevation="5dp"
     android:backgroundTint="@color/homeJames">
     <LinearLayout
         android:orientation="vertical"

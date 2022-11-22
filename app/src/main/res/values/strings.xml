@@ -48,5 +48,8 @@
     <string name="previous_trips">Previous Trips</string>
 
     <string name="MAPS_API_KEY">AIzaSyANNxd0f6zOf_VvWwI-B3bY0rOblhUW410</string>
+    <string name="pickup_time">Pickup Time</string>
+    <string name="dropoff_time">Dropoff Time</string>
+    <string name="previous_trip">Previous Trip</string>
 
 </resources>

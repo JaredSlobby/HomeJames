@@ -26,7 +26,7 @@ import org.w3c.dom.Text;
 public class PreviousTrips extends Fragment
 {
     View view;
-    TextView  TripTimes, ReportDriver;
+    TextView  TripTimes, ReportDriver, DriverName;
     FirebaseUser user;
     String uid, DriverUID, docID;
     @Override
@@ -35,8 +35,8 @@ public class PreviousTrips extends Fragment
         view = inflater.inflate(R.layout.fragment_previous_trips, container, false);
 
         TripTimes = view.findViewById(R.id.TripTimes);
-        ReportDriver = view.findViewById(R.id.ReportDriver);
-
+        DriverName = view.findViewById(R.id.nameDriver);
+        //ReportDriver = view.findViewById(R.id.ReportDriver);
 
         tripInformation();
         ReportDriver();
@@ -58,7 +58,8 @@ public class PreviousTrips extends Fragment
             //testing.setText(bundle.getString("docID"));
             //testing.setText(bundle.getString("DateOfPickUp"));
             //testing.setText(bundle.getString("DriverUID"));
-            TripTimes.setText(bundle.getString("TimeOfPickUp"));
+            //TripTimes.setText(bundle.getString("TimeOfPickUp"));
+
 
             DriverUID = bundle.getString("DriverUID");
             docID = bundle.getString("docID");
@@ -77,6 +78,7 @@ public class PreviousTrips extends Fragment
                             if(document.getId().matches(DriverUID))
                             {
                                 //testing.setText(document.getString("UserName") + " " + document.getString("UserSurname"));
+                                DriverName.setText(document.getString("UserName") + " " + document.getString("UserSurname"));
                             }
                         }
                     }
