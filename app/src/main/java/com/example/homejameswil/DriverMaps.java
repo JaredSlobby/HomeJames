@@ -157,7 +157,6 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
     String cUID;
     String cStatus;
 
-
     BottomSheetDialog bottomSheetDialog;
     View bottomSheetView;
     DatabaseReference dbRef;
@@ -170,6 +169,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        //Testing to see if David can see
         super.onCreate(savedInstanceState);
 
         binding = ActivityDriverMapsBinding.inflate(getLayoutInflater());
@@ -195,7 +195,6 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
         getMyLocation();
         getDriverOrderLocation();
         Log.d(TAG, "onMapReady: " + start + "End: " + end);
-
 
         Drawable circleDrawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_up_arrow_circle);
         //BitmapDescriptor markerIcon = getMarkerIconFromDrawable(circleDrawable, 150, 150);
@@ -227,13 +226,13 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
         {
             Routing routing = new Routing.Builder().travelMode(AbstractRouting.TravelMode.DRIVING).withListener(this).alternativeRoutes(true).waypoints(Start, End).key("AIzaSyANNxd0f6zOf_VvWwI-B3bY0rOblhUW410").build();
             routing.execute();
-
         }
     }
 
     //Routing call back functions.
     @Override
-    public void onRoutingFailure(RouteException e) {
+    public void onRoutingFailure(RouteException e)
+    {
         View parentLayout = findViewById(android.R.id.content);
         Snackbar snackbar = Snackbar.make(parentLayout, e.toString(), Snackbar.LENGTH_LONG);
         snackbar.show();
