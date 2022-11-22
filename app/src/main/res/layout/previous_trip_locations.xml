@@ -25,7 +25,7 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"/>
             <TextView
-                android:text="Location Information"
+                android:text="Trip Information"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 android:layout_marginStart="5dp"
