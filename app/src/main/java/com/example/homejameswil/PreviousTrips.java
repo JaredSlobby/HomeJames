@@ -26,7 +26,7 @@ import org.w3c.dom.Text;
 public class PreviousTrips extends Fragment
 {
     View view;
-    TextView  TripTimes, ReportDriver, DriverName;
+    TextView  TripTimes, ReportDriver, DriverName, orderLocation, home, tripdate;
     FirebaseUser user;
     String uid, DriverUID, docID;
     @Override
@@ -36,10 +36,13 @@ public class PreviousTrips extends Fragment
 
         TripTimes = view.findViewById(R.id.TripTimes);
         DriverName = view.findViewById(R.id.nameDriver);
+        orderLocation = view.findViewById(R.id.LocationInformation);
+        home = view.findViewById(R.id.LocationHome);
+        tripdate = view.findViewById(R.id.TripDate);
         //ReportDriver = view.findViewById(R.id.ReportDriver);
 
         tripInformation();
-        ReportDriver();
+        //ReportDriver();
 
         return view;
     }
@@ -59,11 +62,36 @@ public class PreviousTrips extends Fragment
             //testing.setText(bundle.getString("DateOfPickUp"));
             //testing.setText(bundle.getString("DriverUID"));
             //TripTimes.setText(bundle.getString("TimeOfPickUp"));
-            //Comment
 
 
             DriverUID = bundle.getString("DriverUID");
             docID = bundle.getString("docID");
+
+            db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+            {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task)
+                {
+                    if (task.isSuccessful())
+                    {
+                        for (QueryDocumentSnapshot document : task.getResult())
+                        {
+                            if(document.getId().matches(docID))
+                            {
+                                //testing.setText(document.getString("UserName") + " " + document.getString("UserSurname"));
+                                orderLocation.setText(document.getString("PickUpLocation"));
+                                tripdate.setText(document.getString("Date"));
+
+
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Log.w("TAG", "Error getting documents.", task.getException());
+                    }
+                }
+            });
 
 
             //Check database for DriverUID
@@ -80,6 +108,11 @@ public class PreviousTrips extends Fragment
                             {
                                 //testing.setText(document.getString("UserName") + " " + document.getString("UserSurname"));
                                 DriverName.setText(document.getString("UserName") + " " + document.getString("UserSurname"));
+
+                            }
+                            if(document.getId().matches(user.getUid()))
+                            {
+                                home.setText(document.getString("UserStreetName") + " " + document.getString("UserSuburb"));
                             }
                         }
                     }

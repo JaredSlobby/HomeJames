@@ -273,6 +273,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 {
                     mMap.animateCamera(cameraUpdate);
                     myLocationFound = true;
+
+                    try
+                    {
+                        Json(start , customerLocation);
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

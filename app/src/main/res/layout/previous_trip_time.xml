@@ -39,6 +39,7 @@
                 android:textStyle="bold"
                 android:layout_gravity="center|end"
                 android:gravity="end"
+                android:id="@+id/TripDate"
                 android:layout_marginEnd="10dp"
                 android:textColor="@color/white"
                 android:layout_width="match_parent"
