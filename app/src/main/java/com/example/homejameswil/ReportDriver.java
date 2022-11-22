@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -116,6 +117,13 @@ public class ReportDriver extends Fragment
                                 Log.w("TAG", "Error adding document", e);
                             }
                         });
+
+
+
+                Fragment fragment = new LandingPage();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.frameLayout, fragment);
+                ft.commit();
             }
         });
     }

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_gravity="center"
     android:id="@+id/PreviousTripsFragment"
@@ -22,7 +22,7 @@
 
 
     <Button
-        android:id="@+id/btnSave"
+        android:id="@+id/btnReport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/report"
@@ -42,7 +42,7 @@
             android:textColor="@color/white"
             android:layout_gravity="center"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btnSave"
+            app:layout_constraintEnd_toStartOf="@id/btnReport"
             android:layout_marginEnd="25dp"
             android:gravity="center"/>
 
@@ -58,21 +58,18 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_width="match_parent" />
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
             <include layout="@layout/previous_trip_locations"/>
             <include layout="@layout/previous_trip_time"/>
 
 
 
         </LinearLayout>
-    </ScrollView>
+
 
 
 

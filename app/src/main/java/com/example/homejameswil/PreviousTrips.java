@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,6 +28,7 @@ public class PreviousTrips extends Fragment
 {
     View view;
     TextView  TripTimes, ReportDriver, DriverName, orderLocation, home, tripdate, triptime, triptimedropoff;
+    Button btnReport;
     FirebaseUser user;
     String uid, DriverUID, docID;
     @Override
@@ -41,10 +43,13 @@ public class PreviousTrips extends Fragment
         tripdate = view.findViewById(R.id.TripDate);
         triptime = view.findViewById(R.id.TripTimes);
         triptimedropoff = view.findViewById(R.id.TripTimesDropOff);
+        btnReport = view.findViewById(R.id.btnReport);
         //ReportDriver = view.findViewById(R.id.ReportDriver);
 
+        ReportDriver();
+
         tripInformation();
-        //ReportDriver();
+
 
         return view;
     }
@@ -129,9 +134,10 @@ public class PreviousTrips extends Fragment
         }
     }
 
+
     private void ReportDriver()
     {
-        ReportDriver.setOnClickListener(new View.OnClickListener()
+        btnReport.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -141,15 +147,23 @@ public class PreviousTrips extends Fragment
                 bundleReport.putString("DriverUID", DriverUID);
 
 
-                Fragment fragment = new ReportDriver();
+                /*Fragment fragment = new ReportDriver();
                 fragment.setArguments(bundleReport);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.PreviousTripsFragment, fragment);
                 fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                fragmentTransaction.commit();*/
+
+                ReportDriver();
+                Fragment fragment = new ReportDriver();
+                fragment.setArguments(bundleReport);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.frameLayout, fragment);
+                ft.commit();
             }
         });
+
     }
 
 
