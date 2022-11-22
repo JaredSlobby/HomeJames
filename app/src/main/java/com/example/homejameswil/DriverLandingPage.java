@@ -60,6 +60,11 @@ public class DriverLandingPage extends Fragment
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_driver_landing_page, container, false);
 
+        //Sign out of firebase
+        //Using it to test
+        //FirebaseAuth.getInstance().signOut();
+
+
         // Enable verbose OneSignal logging to debug issues if needed.
         OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
 
@@ -159,7 +164,6 @@ public class DriverLandingPage extends Fragment
 
     private void LocationDriver()
     {
-
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapDriver);
 
         // Async map
@@ -172,7 +176,8 @@ public class DriverLandingPage extends Fragment
             mapDriver = googleMap;
             boolean success = googleMap.setMapStyle(new MapStyleOptions(getResources()
                     .getString(R.string.style_json)));
-            if (!success) {
+            if (!success)
+            {
                 Log.e("TAG", "Style parsing failed.");
             }
             // Add a marker in Sydney and move the camera
@@ -192,7 +197,6 @@ public class DriverLandingPage extends Fragment
                 @Override
                 public void onMyLocationChange(Location location)
                 {
-
                     //Convert location to LatLong
                     start = new LatLng(location.getLatitude(), location.getLongitude());
 
@@ -218,8 +222,6 @@ public class DriverLandingPage extends Fragment
 
     });
 
-
-
         workingHours = view.findViewById(R.id.workingHoursDriver);
 
         String MondayToSaturday = "6pm - 2am";
@@ -234,20 +236,10 @@ public class DriverLandingPage extends Fragment
                 workingHours.setText(Sunday);
                 break;
             case Calendar.MONDAY:
-                workingHours.setText(MondayToSaturday);
-                break;
             case Calendar.TUESDAY:
-                workingHours.setText(MondayToSaturday);
-                break;
             case Calendar.WEDNESDAY:
-                workingHours.setText(MondayToSaturday);
-                break;
             case Calendar.THURSDAY:
-                workingHours.setText(MondayToSaturday);
-                break;
             case Calendar.FRIDAY:
-                workingHours.setText(MondayToSaturday);
-                break;
             case Calendar.SATURDAY:
                 workingHours.setText(MondayToSaturday);
                 break;
@@ -258,7 +250,8 @@ public class DriverLandingPage extends Fragment
     private void checkActiveTrip()
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task)
             {
@@ -273,14 +266,13 @@ public class DriverLandingPage extends Fragment
                             Log.d(TAG, "DRIVERS ID in IF statement" + user.getUid());
                             activeTrip = true;
                         }
-
                     }
-                } else {
+                }
+                else
+                {
                     Log.w(TAG, "Error getting documents.", task.getException());
                 }
             }
         });
     }
-
-
 }

@@ -220,7 +220,6 @@ public class Fragment_rides extends Fragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-
                 bottomSheetDialog = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
                 bottomSheetView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_bottom_sheet_driver, view.findViewById(R.id.bottomSheetTrip));
 
@@ -319,14 +318,14 @@ public class Fragment_rides extends Fragment
                         user.put("DriverUID", uid );
                         user.put("Status", "Active");
                         user.put("Name", cName);
+                        user.put("SMS", "No");
 
                         //Writing to Firestore specifying collection path with custom set Document reference
-                        db.collection("Orders").document(DocID)
-                                .set(user)
-                                .addOnSuccessListener(new OnSuccessListener<Void>()
+                        db.collection("Orders").document(DocID).set(user).addOnSuccessListener(new OnSuccessListener<Void>()
                                 {
                                     @Override
-                                    public void onSuccess(Void aVoid) {
+                                    public void onSuccess(Void aVoid)
+                                    {
                                         Log.d(TAG, "DocumentSnapshot added with ID:" );
                                     }
                                 })
@@ -639,14 +638,11 @@ public class Fragment_rides extends Fragment
 
 
                             //format distance string and change to double
-                            String distanceStringHomeFormatted = distanceString.replace(" km", "");
-                            distanceHome = Double.parseDouble(distanceStringHomeFormatted);
+                            //String distanceStringHomeFormatted = distanceString.replace(" km", "");
+                            //distanceHome = Double.parseDouble(distanceStringHomeFormatted);
                             //format duration string and change to double
-                            String durationStringHomeFormatted = durationString.replace(" mins", "");
-                            durationHome = Double.parseDouble(durationStringHomeFormatted);
-
-
-
+                            //String durationStringHomeFormatted = durationString.replace(" mins", "");
+                            //durationHome = Double.parseDouble(durationStringHomeFormatted);
 
                         }
                         catch (JSONException | IOException e)

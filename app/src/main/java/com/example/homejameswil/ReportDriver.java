@@ -50,7 +50,7 @@ public class ReportDriver extends Fragment
     {
         ReportDriver = view.findViewById(R.id.DropDown);
 
-        String[] Reason = new String[]{"Sexual Assault", "Bad Driving", "Inappropriate Behaviour", "Other"};
+        String[] Reason = new String[]{"Sexual Assault", "Bad Driving", "Inappropriate Behaviour", "Late","Other"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item, Reason);
         ReportDriver.setAdapter(adapter);
 
@@ -67,12 +67,9 @@ public class ReportDriver extends Fragment
 
     private void submitDriverReport()
     {
-
         Bundle bundleReport = this.getArguments();
-
         if(bundleReport != null)
         {
-
             DriverUID = bundleReport.getString("DriverUID");
             docID = bundleReport.getString("docID");
         }

@@ -76,12 +76,15 @@ public class LandingPage extends Fragment
 
         OneSignal.promptForPushNotifications();
 
+        currentActiveTrip();
+
         //OneSignal.addTrigger("User_ID", "True");
 
         // Return view
         //setExternalUserID(user.getUid());
         return view;
     }
+
 
     private void location()
     {
@@ -203,20 +206,10 @@ public class LandingPage extends Fragment
                 workingHours.setText(Sunday);
                 break;
             case Calendar.MONDAY:
-                workingHours.setText(MondayToSaturday);
-                break;
             case Calendar.TUESDAY:
-                workingHours.setText(MondayToSaturday);
-                break;
             case Calendar.WEDNESDAY:
-                workingHours.setText(MondayToSaturday);
-                break;
             case Calendar.THURSDAY:
-                workingHours.setText(MondayToSaturday);
-                break;
             case Calendar.FRIDAY:
-                workingHours.setText(MondayToSaturday);
-                break;
             case Calendar.SATURDAY:
                 workingHours.setText(MondayToSaturday);
                 break;
@@ -227,6 +220,34 @@ public class LandingPage extends Fragment
     }
 
 
+    private void currentActiveTrip()
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        //Read from database specifying with collection
+        db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task)
+            {
+                if (task.isSuccessful())
+                {
+                    for (QueryDocumentSnapshot document : task.getResult())
+                    {
+                        if (document.getString("UID").matches(user.getUid()) && document.getString("Status").matches("Active"))
+                        {
+                            //Do What I want for now
+                            Toast.makeText(getContext(), "You have an active trip", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+                else
+                {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
+            }
+        });
+    }
 
 
 }

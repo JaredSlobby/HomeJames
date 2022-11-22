@@ -58,6 +58,8 @@ dependencies {
     // V3
     implementation 'com.google.android.libraries.maps:maps:3.1.0-beta'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation platform('com.google.firebase:firebase-bom:26.1.1')
+
     implementation 'com.google.firebase:firebase-database:20.1.0'
     implementation 'com.google.firebase:firebase-auth:21.1.0'
     implementation 'com.google.firebase:firebase-firestore:24.4.0'

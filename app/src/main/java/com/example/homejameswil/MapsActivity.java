@@ -73,6 +73,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -379,12 +384,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 user = FirebaseAuth.getInstance().getCurrentUser();
                 uid = user.getUid();
 
-
-
-
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                //Creating user obje
+                //Creating user object
                 Map<String, Object> user = new HashMap<>();
                 user.put("UID", uid);
                 user.put("Time", Time);
@@ -393,21 +395,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 user.put("Longitude", customerLong);
                 user.put("Status", "Pending");
                 user.put("Name", cName.get(0));
+                user.put("HomeLatitude", );
+                user.put("HomeLongitude", );
 
                 //Writing to Firestore specifying collection path with custom set Document reference
                 // Add a new document with a generated ID
-                db.collection("Orders")
-                        .add(user)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>()
+                db.collection("Orders").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>()
                         {
                             @Override
-                            public void onSuccess(DocumentReference documentReference) {
+                            public void onSuccess(DocumentReference documentReference)
+                            {
                                 Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                             }
                         })
-                        .addOnFailureListener(new OnFailureListener() {
+                        .addOnFailureListener(new OnFailureListener()
+                        {
                             @Override
-                            public void onFailure(@NonNull Exception e) {
+                            public void onFailure(@NonNull Exception e)
+                            {
                                 Log.w(TAG, "Error adding document", e);
                             }
                         });
@@ -428,6 +433,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v)
             {
                 BottomSheetDialog();
+            }
+        });
+    }
+
+
+    private void trackDriver()
+    {
+        //Check realtime database for driver location
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("DriverLocation");
+        myRef.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                //Get driver location
+                String driverLat = dataSnapshot.child("Latitude").getValue().toString();
+                String driverLong = dataSnapshot.child("Longitude").getValue().toString();
+                //Convert to double
+                double dLat = Double.parseDouble(driverLat);
+                double dLong = Double.parseDouble(driverLong);
+                //Add marker to map
+                LatLng driverLocation = new LatLng(dLat, dLong);
+                mMap.addMarker(new MarkerOptions().position(driverLocation).title("Driver Location"));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+
             }
         });
     }
