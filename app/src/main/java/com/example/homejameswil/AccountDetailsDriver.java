@@ -61,6 +61,8 @@ public class AccountDetailsDriver extends Fragment
 
         Bundle bundle = this.getArguments();
 
+        //Jared
+
         if(bundle != null)
         {
             bundle.getString("docID");
