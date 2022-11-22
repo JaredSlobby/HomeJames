@@ -7,26 +7,28 @@
     android:background="@drawable/backgroundimage"
     android:id="@+id/PreviousTripsFragment">
 
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/previous_trips"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:gravity="center|top"/>
+
+
 <LinearLayout
     android:layout_width="350dp"
     android:layout_height="match_parent"
-    android:layout_marginTop="25dp"
+    android:layout_marginTop="30dp"
     android:layout_gravity="center"
     android:orientation="vertical">
 
     <include layout="@layout/item_profile" />
 
 </LinearLayout>
-    <LinearLayout
-        android:layout_width="210dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="180dp">
 
-        <include layout="@layout/previous_trip_time" />
-        <include layout="@layout/previous_trip_driver_name"/>
 
-    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"

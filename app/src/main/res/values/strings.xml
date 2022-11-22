@@ -43,5 +43,10 @@
     <string name="any_other_information">Any Other Information</string>
     <string name="customer_dropped_off">Customer Dropped Off?</string>
     <string name="dropped_customer">Dropped Customer</string>
+    <string name="vehicle_type">Vehicle Type</string>
+    <string name="vehicle_plate">Vehicle Plate</string>
+    <string name="previous_trips">Previous Trips</string>
+
+    <string name="MAPS_API_KEY">AIzaSyANNxd0f6zOf_VvWwI-B3bY0rOblhUW410</string>
 
 </resources>

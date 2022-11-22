@@ -84,7 +84,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.twilio.rest.chat.v1.service.User;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -92,6 +97,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 {
@@ -116,6 +130,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ArrayList<String> cName;
     ArrayList<Double> cHomeLatitude;
     ArrayList<Double> cHomeLongitude;
+    private String API_KEY = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -124,6 +139,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        String API = getString(R.string.MAPS_API_KEY);
+
+        API_KEY = API;
 
         requestPermission();
 
@@ -405,6 +424,85 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
+
+
+    public void Json(LatLng start, LatLng end) throws IOException
+    {
+        Log.d(TAG, "Json: " + start.toString() + end.toString());
+
+        //Convert variable start from LatLng to a string
+        String startString = start.toString();
+        //Remove the brackets from the string
+        startString = startString.replace("(", "");
+        //Remove lat/lng from the string
+        startString = startString.replace("lat/lng: ", "");
+        //Remove the bracket and the end of the string
+        startString = startString.replace(")", "");
+        Log.d(TAG, "Json: " + startString);
+
+        //Convert variable end from LatLng to a string
+        String endString = end.toString();
+        //Remove the brackets from the string
+        endString = endString.replace("(", "");
+        //Remove lat/lng from the string
+        endString = endString.replace("lat/lng: ", "");
+        //Remove the bracket and the end of the string
+        endString = endString.replace(")", "");
+        //Split up the two strings into two separate strings
+        String[] startArray = startString.split(",");
+        String[] endArray = endString.split(",");
+
+        HttpUrl mySearchUrl = new HttpUrl.Builder().scheme("https").host("maps.googleapis.com").addPathSegment("maps").addPathSegment("api").addPathSegment("distancematrix").addPathSegment("json").addQueryParameter("origins", startArray[0] + "," + startArray[1] + "&destinations=" + endString + "&units=" + "metric" + "&key=" + API_KEY).build();
+        String afterDecode = URLDecoder.decode(mySearchUrl.toString(), "UTF-8");
+
+        Log.d(TAG, "Json: " + mySearchUrl.toString());
+
+        OkHttpClient client = new OkHttpClient().newBuilder().build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = RequestBody.create(mediaType, "");
+        Request request = new Request.Builder().url(afterDecode).method("GET", null).build();
+        client.newCall(request).enqueue(new Callback()
+        {
+            @Override
+            public void onFailure(Call call, IOException e) {}
+            @Override
+            public void onResponse(Call call, Response response) throws IOException
+            {
+                Log.d(TAG, "onResponse: " + response.body().string());
+                Thread thread = new Thread()
+                {
+                    @Override
+                    public void run()
+                    {
+                        try
+                        {
+                            Response response = client.newCall(request).execute();
+                            JSONObject jsonObject = new JSONObject(response.body().string());// parse response into json object
+                            //Pull origin_addresses from JSON
+                            JSONArray destinationAddresses = jsonObject.getJSONArray("origin_addresses");
+                                    //Format origin_addresses
+                                    String originAddress = destinationAddresses.toString();
+                            originAddress = originAddress.replace("[", "");
+                            originAddress = originAddress.replace("]", "");
+                            originAddress = originAddress.replace("\"", "");
+                        }
+                        catch (JSONException | IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                thread.setPriority(Thread.MAX_PRIORITY);
+                thread.start();
+
+            }
+        });
+    }
+
+
+
+
+
 
 
     private void trackDriver()

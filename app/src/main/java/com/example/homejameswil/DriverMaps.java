@@ -452,13 +452,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                             map.clear();
                                         }
                                     });
-
-
                                 }
-
-
-
-
                                 bottomSheetDialog.setContentView(bottomSheetView);
                                 bottomSheetDialog.show();
                             }
