@@ -131,6 +131,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ArrayList<Double> cHomeLatitude;
     ArrayList<Double> cHomeLongitude;
     private String API_KEY = "";
+    String originAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -238,7 +239,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    //Supress warning for location
+
 
     boolean myLocationFound = false;
     @SuppressLint("MissingPermission")
@@ -285,8 +286,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         numberPicker1 = bottomSheetView.findViewById(R.id.numberPicker1);
         numberPicker2 = bottomSheetView.findViewById(R.id.numberPicker2);
-
-
 
 
         //Set number picker values
@@ -385,6 +384,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 user.put("HomeLatitude", cHomeLatitude.get(0));
                 user.put("HomeLongitude", cHomeLongitude.get(0));
                 user.put("SMS", "No");
+                user.put("PickUpLocation", originAddress);
 
                 //Writing to Firestore specifying collection path with custom set Document reference
                 // Add a new document with a generated ID
@@ -481,7 +481,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             //Pull origin_addresses from JSON
                             JSONArray destinationAddresses = jsonObject.getJSONArray("origin_addresses");
                                     //Format origin_addresses
-                                    String originAddress = destinationAddresses.toString();
+                                    originAddress = destinationAddresses.toString();
                             originAddress = originAddress.replace("[", "");
                             originAddress = originAddress.replace("]", "");
                             originAddress = originAddress.replace("\"", "");
@@ -498,6 +498,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
+
+    LatLng start = new LatLng(53.3498, -6.2603);
 
 
 
