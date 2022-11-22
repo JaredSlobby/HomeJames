@@ -51,5 +51,6 @@
     <string name="pickup_time">Pickup Time</string>
     <string name="dropoff_time">Dropoff Time</string>
     <string name="previous_trip">Previous Trip</string>
+    <string name="report">Report</string>
 
 </resources>
