@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,6 +32,7 @@ public class ReportDriver extends Fragment
 {
     View view;
     AutoCompleteTextView ReportDriver;
+    EditText info;
     Button btnReportDriver;
     FirebaseUser user;
     String uid, DriverUID, docID;
@@ -72,8 +74,10 @@ public class ReportDriver extends Fragment
         {
             DriverUID = bundleReport.getString("DriverUID");
             docID = bundleReport.getString("docID");
+
         }
 
+        info = view.findViewById(R.id.Info);
         btnReportDriver = view.findViewById(R.id.btnReportDriver);
         btnReportDriver.setOnClickListener(new View.OnClickListener()
         {
@@ -91,6 +95,8 @@ public class ReportDriver extends Fragment
                 report.put("CustomerUID", uid);
                 report.put("DriverUID", DriverUID);
                 report.put("Reason", ReportDriver.getText().toString());
+                report.put("Info", info.getText().toString());
+                report.put("TripID", docID);
 
                 //Writing to Firestore specifying collection path with custom set Document reference
                 // Add a new document with a generated ID

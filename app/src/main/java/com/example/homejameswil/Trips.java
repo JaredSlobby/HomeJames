@@ -44,7 +44,6 @@ public class Trips extends Fragment
     ArrayList<String> DriverUID;
     ArrayList<String> TimeOfPickUp;
 
-
     View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)

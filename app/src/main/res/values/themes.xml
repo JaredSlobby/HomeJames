@@ -24,13 +24,5 @@
         <item name="colorControlNormal">@color/white</item>
     </style>
 
-    <style name="LoginTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@color/white</item>
-        <item name="boxStrokeWidth">2dp</item>
-    </style>
-
-
-
-
 
 </resources>

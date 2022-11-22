@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LandingPage"
-    android:id="@+id/fragmentDriverLanding"
     android:background="@drawable/backgroundimage">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,7 +51,6 @@
                 android:layout_height="125dp"
                 app:cardCornerRadius="20dp"
                 android:elevation="10dp"
-                android:id="@+id/ActiveDrivers"
                 android:backgroundTint="@color/homeJames">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -95,7 +93,6 @@
                 app:cardCornerRadius="20dp"
                 android:layout_marginStart="70dp"
                 android:elevation="10dp"
-                android:id="@+id/ToBeDetermined"
                 android:backgroundTint="@color/homeJames">
 
 

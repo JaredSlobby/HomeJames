@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/bottomSheetTrip"
+    android:id="@+id/bottomSheetTripDroppedOff"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bottom_sheet_background"
@@ -27,7 +27,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/trip_information"
+                    android:text="@string/customer_dropped_off"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:gravity="center"
@@ -39,23 +39,6 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:padding="5dp">
-                <TextView
-                    android:layout_width="185dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/distance"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:gravity="center"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/total_trip_time"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:gravity="center"
-                    android:textStyle="bold"/>
 
             </LinearLayout>
 
@@ -64,25 +47,7 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:padding="5dp">
-                <TextView
-                    android:layout_width="185dp"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:id="@+id/Lat"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:gravity="center"
-                    android:textStyle="bold"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:id="@+id/Long"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:gravity="center"
-                    android:textStyle="bold"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -105,13 +70,13 @@
         android:gravity="center_vertical">
 
         <Button
-            android:id="@+id/btnTrip"
+            android:id="@+id/btnTripDroppedOf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_corner"
             android:layout_marginStart="3dp"
             android:layout_marginEnd="3dp"
-            android:text="@string/accept_trip"
+            android:text="@string/dropped_customer"
             android:backgroundTint="#fd8d3c"
             android:textColor="@color/white"
             android:textSize="15sp"/>

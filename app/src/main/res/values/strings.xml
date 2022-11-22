@@ -1,15 +1,5 @@
 <resources>
     <string name="app_name">HomeJamesWIL</string>
-    <string name="title_activity_maps">MapsActivity</string>
-    <string name="channel_name">Testing</string>
-    <string name="channel_description">Description test</string>
-    <string name="reply_label">Reply</string>
-    <string name="title">Title</string>
-    <string name="content">Content</string>
-    <string name="label1">Label</string>
-    <string name="page_1">Page 1</string>
-    <string name="page_2">Page 2</string>
-    <string name="page_3">Page 2</string>
     <string name="home">Home</string>
     <string name="trips">Trips</string>
     <string name="account">Account</string>
@@ -19,10 +9,6 @@
     <string name="phone_number">Phone Number</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="request_ride">Request Ride</string>
-    <string name="switch_google">Switch google</string>
-    <string name="button_google">Button Google</string>
-    <string name="testing_google">Testing google</string>
     <string name="trip_information">Trip Information</string>
     <string name="request_trip">Request Trip</string>
     <string name="pick_up_time">Pick Up Time</string>
@@ -30,10 +16,8 @@
     <string name="personal_details">Personal Details</string>
     <string name="request_a_trip">Request a Trip</string>
     <string name="title_activity_driver_maps">DriverMaps</string>
-    <string name="customer_information">Customer Information</string>
     <string name="accept_trip">Accept Trip</string>
     <string name="distance">Distance</string>
-    <string name="time_of_arrival">Time of Arrival</string>
     <string name="register">Register</string>
     <string name="total_trip_time">Total Trip Time</string>
     <string name="customer_address">Customer Address</string>
@@ -41,7 +25,6 @@
     <string name="rides">Rides</string>
     <string name="active_drivers">Active Drivers</string>
     <string name="address">Address</string>
-    <string name="email">Email</string>
     <string name="suburb">Suburb</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
@@ -51,7 +34,6 @@
     <string name="edit">Edit</string>
     <string name="sign_out">Sign Out</string>
     <string name="title_activity_home_maps">HomeMaps</string>
-    <string name="trip_request_time">Trip Request Time</string>
     <string name="trip_times">Trip Times</string>
     <string name="driver_name">Driver Name</string>
     <string name="drivers">Drivers</string>
@@ -59,5 +41,7 @@
     <string name="report_driver">Report Driver</string>
     <string name="reason">Reason</string>
     <string name="any_other_information">Any Other Information</string>
+    <string name="customer_dropped_off">Customer Dropped Off?</string>
+    <string name="dropped_customer">Dropped Customer</string>
 
 </resources>

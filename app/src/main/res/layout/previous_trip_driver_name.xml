@@ -39,7 +39,6 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:id="@+id/DriverName"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="7dp"
             android:layout_width="wrap_content"

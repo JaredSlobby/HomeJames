@@ -81,7 +81,7 @@
         android:layout_marginTop="40dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/Name"
+            android:id="@+id/Info"
             android:layout_width="match_parent"
             android:textColor="@color/white"
             android:maxLines="1"

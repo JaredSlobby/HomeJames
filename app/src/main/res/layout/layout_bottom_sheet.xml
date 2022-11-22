@@ -30,7 +30,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/trip_information"
-                    android:id="@+id/TripInfo"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:gravity="center"
@@ -47,7 +46,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/date_of_pickup"
                     android:textColor="@color/white"
-                    android:id="@+id/Date_picker"
                     android:textSize="20sp"
                     android:gravity="center"
                     android:textStyle="bold"/>
@@ -57,7 +55,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/pick_up_time"
                     android:textColor="@color/white"
-                    android:id="@+id/Time_pickerAction"
                     android:textSize="20sp"
                     android:gravity="center"
                     android:textStyle="bold"/>
