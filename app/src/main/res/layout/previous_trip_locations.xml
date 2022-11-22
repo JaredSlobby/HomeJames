@@ -21,7 +21,7 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:padding="3dp"
-                android:src="@drawable/smartphone"
+                android:src="@drawable/marker"
                 android:layout_width="35dp"
                 android:layout_height="35dp"/>
             <TextView
