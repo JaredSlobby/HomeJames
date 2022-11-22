@@ -12,19 +12,56 @@
     tools:context=".AccountDetails">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/previous_trip"
-        android:textSize="30sp"
-        android:textColor="@color/white"
-        android:layout_gravity="center"/>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <Button
+            android:id="@+id/btnEditCustomer"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/rounded_corner_button"
+            android:text="@string/edit"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <Button
+            android:id="@+id/btnSignOut"
+            android:layout_width="105dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/rounded_corner_button"
+            android:text="@string/sign_out"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
     <include
         android:layout_gravity="center"
         layout="@layout/item_profile"
         android:layout_height="wrap_content"
-
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_width="match_parent" />

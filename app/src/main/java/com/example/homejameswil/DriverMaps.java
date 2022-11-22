@@ -865,6 +865,28 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                 String strDate = mdformat.format(calendar.getTime());
                                 document.getReference().update("TimeOfPickUp", strDate);
                                 document.getReference().update("PickUpLocation", originAddress);
+
+                                try {
+                                    Thread thread = new Thread(new Runnable()
+                                    {
+                                        @Override
+                                        public void run() {
+                                            try {
+                                                sendNotification();
+                                                InsideCircle(end);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                    thread.start();
+                                }
+                                catch (Exception e)
+                                {
+                                    e.printStackTrace();
+                                }
+
+
                             }
                             if (Update.matches("Completed"))
                             {

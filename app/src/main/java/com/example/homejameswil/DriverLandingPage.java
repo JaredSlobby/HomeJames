@@ -252,14 +252,16 @@ public class DriverLandingPage extends Fragment
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
         {
+            //Testing
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task)
             {
-                if (task.isSuccessful()) {
+                if (task.isSuccessful())
+                {
                     for (QueryDocumentSnapshot document : task.getResult())
                     {
                         Log.d(TAG, "DRIVERS ID" + user.getUid());
-                        if (document.getString("DriverUID").matches(user.getUid()) && (document.getString("Status").matches("Active") && document.getString("Status").matches("PickedUp")))
+                        if (document.getString("DriverUID").matches(user.getUid()) && (document.getString("Status").matches("Active") || document.getString("Status").matches("PickedUp")))
                         {
                             Intent intent = new Intent(getContext(), DriverMaps.class);
                             startActivity(intent);
