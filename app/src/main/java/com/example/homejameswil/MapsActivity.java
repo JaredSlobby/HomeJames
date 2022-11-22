@@ -82,6 +82,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.twilio.rest.chat.v1.service.User;
 
 import java.io.IOException;
 import java.sql.Time;
@@ -113,8 +114,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String uid;
 
     ArrayList<String> cName;
-    ArrayList<String> cHomeLatitude;
-    ArrayList<String> cHomeLongitude;
+    ArrayList<Double> cHomeLatitude;
+    ArrayList<Double> cHomeLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -152,11 +153,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         {
                             for (QueryDocumentSnapshot document : task.getResult())
                             {
-                                if(document.getId().matches(uid))
+                                if(document.getId().matches(uid) && document.getString("Status").matches("Client"))
                                 {
-                                    cName.add(document.getString("UserName"));
-                                    cHomeLatitude.add(document.getString("HomeLatitude"));
-                                    cHomeLongitude.add(document.getString("HomeLongitude"));
+                                    cName.add(document.get("Name").toString());
+                                    cHomeLatitude.add(document.getDouble("HomeLatitude"));
+                                    cHomeLongitude.add(document.getDouble("HomeLongitude"));
                                 }
                             }
                         }
@@ -364,6 +365,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 user.put("Name", cName.get(0));
                 user.put("HomeLatitude", cHomeLatitude.get(0));
                 user.put("HomeLongitude", cHomeLongitude.get(0));
+                user.put("SMS", "No");
 
                 //Writing to Firestore specifying collection path with custom set Document reference
                 // Add a new document with a generated ID

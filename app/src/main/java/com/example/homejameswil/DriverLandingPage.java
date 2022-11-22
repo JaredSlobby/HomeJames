@@ -259,12 +259,16 @@ public class DriverLandingPage extends Fragment
                     for (QueryDocumentSnapshot document : task.getResult())
                     {
                         Log.d(TAG, "DRIVERS ID" + user.getUid());
-                        if (document.getString("DriverUID").matches(user.getUid()) && document.getString("Status").matches("Active"))
+                        if (document.getString("DriverUID").matches(user.getUid()) && (document.getString("Status").matches("Active") || document.getString("Status").matches("PickedUp")))
                         {
                             Intent intent = new Intent(getContext(), DriverMaps.class);
                             startActivity(intent);
                             Log.d(TAG, "DRIVERS ID in IF statement" + user.getUid());
                             activeTrip = true;
+                        }
+                        else
+                        {
+                            activeTrip = false;
                         }
                     }
                 }

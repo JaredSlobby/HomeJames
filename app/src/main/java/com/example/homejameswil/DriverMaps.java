@@ -273,6 +273,8 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                 int k = polyline.getPoints().size();
                 polylineEndLatLng = polyline.getPoints().get(k - 1);
                 polylines.add(polyline);
+                polyline.getPoints().get(0);
+                Log.d(TAG, "PolyLinePoints: " + polyline.getPoints().get(0) + " " + polyline.getPoints().get(1));
             }
             else
             {
@@ -331,116 +333,9 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
 
 
                 driverRealTimeLocation();
+                //InsideCircle(start, end);
                 //region Doesn't work
-                /*FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                clientDate = new ArrayList();
-                clientLatitude = new ArrayList();
-                clientLongitude = new ArrayList();
-                clientTime = new ArrayList();
-                clientUID = new ArrayList();
-                clientStatus = new ArrayList();
-
-
-
-                //Read from database specifying with collection
-                db.collection("Orders")
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-                        {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task)
-                            {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult())
-                                    {
-                                        //if()
-                                        {
-                                            clientDocID.add(document.getId());
-                                            clientDate.add(document.getString("Date"));
-                                            clientLatitude.add(document.getDouble("Latitude"));
-                                            clientLongitude.add(document.getDouble("Longitude"));
-                                            clientTime.add(document.getString("Time"));
-                                            clientUID.add(document.getString("UID"));
-                                            clientStatus.add(document.getString("Status"));
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    Log.w(TAG, "Error getting documents.", task.getException());
-                                }
-                            }
-                        });
-
-
-                user = FirebaseAuth.getInstance().getCurrentUser();
-                uid = user.getUid();
-
-                //Creating user object
-                //Setting text boxes to user object defining node names
-                Map<String, Object> user = new HashMap<>();
-
-
-                user.put("Date", clientDate.get(0));
-                user.put("Latitude", clientLatitude.get(0));
-                user.put("Longitude", clientLongitude.get(0));
-                user.put("Time", clientTime.get(0) );
-                user.put("UID", clientUID.get(0));
-                user.put("DriverUID", uid);
-                user.put("Status", "PickedUp");
-
-
-
-
-                //Writing to Firestore specifying collection path with custom set Document reference
-                db.collection("Orders").document(clientDocID.get(0))
-                        .set(user)
-                        .addOnSuccessListener(new OnSuccessListener<Void>()
-                        {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d(TAG, "DocumentSnapshot added with ID:" );
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener()
-                        {
-                            @Override
-                            public void onFailure(@NonNull Exception e)
-                            {
-                                Log.w(TAG, "Error adding document", e);
-                            }
-                        });*/
-                //endregion
-
-                /*while (!PickedUp)
-                {
-                    driverRealTimeLocation();
-                    //OnDataChange is called on Status in database
-                    dbRef.addValueEventListener(new ValueEventListener()
-                    {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot)
-                        {
-                            for(DataSnapshot ds : snapshot.getChildren())
-                            {
-
-                                if(ds.child("uid").equals(uid) || ds.child("status").equals("PickedUp"))
-                                {
-                                    DriverLocation dl = ds.getValue(DriverLocation.class);
-
-                                    PickedUp = true;
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error)
-                        {
-
-                        }
-                    });
-                }*/
                 Log.d(TAG, "MyLocation: TEST2.0" + start);
 
                 LatLng ltlng = new LatLng(location.getLatitude(), location.getLongitude());
@@ -467,7 +362,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
 
     private void getDriverOrderLocation()
     {
-        orderUpdating("Active");
+        orderUpdating();
     }
 
 
@@ -492,6 +387,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
             //Run every 5 seconds
             try
             {
+                Log.d(TAG, "InsideCircle: " + radius);
                 Thread.sleep(5000);
                 //Check distance between driver and client
                 float[] results = new float[1];
@@ -499,13 +395,14 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                 Log.d(TAG, "Distance between driver and client: " + starting.latitude + " " + starting.longitude + " " + ending.latitude + " " + ending.longitude + " " + results[0]);
                 distanceInMeters = results[0];
                 Log.d(TAG, "Distance between driver and client: " + distanceInMeters);
-                Findroutes(starting, ending);
+                //Findroutes(starting, ending);
 
 
-                if (distanceInMeters <= 100)
+                if (distanceInMeters <= 200)
                 {
                     Log.d(TAG, "Distance Driver HAS ARRIVED" + distanceInMeters);
                     radius = true;
+                    Log.d(TAG, "Distance Driver HAS ARRIVED: " + radius);
                     if(radius)
                     {
                         runOnUiThread(new Runnable()
@@ -513,8 +410,17 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                             @Override
                             public void run()
                             {
-                                bottomSheetDialog = new BottomSheetDialog(DriverMaps.this, R.style.BottomSheetDialogTheme);
-                                bottomSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_bottom_sheet_driver_home, findViewById(R.id.bottomSheetTripHome));
+
+                                if (ending == end)
+                                {
+                                    bottomSheetDialog = new BottomSheetDialog(DriverMaps.this, R.style.BottomSheetDialogTheme);
+                                    bottomSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_bottom_sheet_driver_home, findViewById(R.id.bottomSheetTripHome));
+                                }
+                                else if(ending == CustomerHome)
+                                {
+
+                                }
+
                                 try
                                 {
                                     JsonFileHome(start, CustomerHome);
@@ -531,6 +437,8 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                     public void onClick(View view)
                                     {
                                         Findroutes(start, CustomerHome);
+                                        bottomSheetDialog.dismiss();
+                                        updateOrder();
                                     }
                                 });
                                 bottomSheetDialog.setContentView(bottomSheetView);
@@ -645,14 +553,13 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
     //[                         ]
 
 
-    private double bearingBetweenLocations(LatLng latLng1, LatLng latLng2) {
-
+    private double bearingBetweenLocations(LatLng latLng1, LatLng latLng2)
+    {
         double PI = 3.14159;
         double lat1 = latLng1.latitude * PI / 180;
         double long1 = latLng1.longitude * PI / 180;
         double lat2 = latLng2.latitude * PI / 180;
         double long2 = latLng2.longitude * PI / 180;
-
 
         double dLon = (long2 - long1);
 
@@ -758,9 +665,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
         }
     }
 
-
-
-    private void orderUpdating(String Status)
+    private void orderUpdating()
     {
         //Connection to database
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -776,8 +681,6 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
         clientHomeLatitude = new ArrayList();
         clientHomeLongitude = new ArrayList();
 
-
-
         //Read from database specifying with collection
         db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
         {
@@ -789,7 +692,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                     for (QueryDocumentSnapshot document : task.getResult())
                     {
                         Log.d(TAG, "DRIVERS ID"+ user.getUid());
-                        if(document.getString("DriverUID").matches(user.getUid()) && document.getString("Status").matches(Status))
+                        if(document.getString("DriverUID").matches(user.getUid()) && (document.getString("Status").matches("Active") || document.getString("Status").matches("PickedUp")))
                         {
                             clientDocID.add(document.getId());
                             clientLatitude.add(document.getDouble("Latitude"));
@@ -797,22 +700,52 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                             clientUID.add(document.getString("UID"));
                             clientHomeLatitude.add(document.getDouble("HomeLatitude"));
                             clientHomeLongitude.add(document.getDouble("HomeLongitude"));
+                            String Status = document.getString("Status");
 
                             Log.d(TAG, "Client ordered lat test: " + clientLatitude + "Client Long: " + clientLongitude);
                             if(Status.matches("Active"))
                             {
-                                //Send notification to client
+
                                 end = new LatLng(clientLatitude.get(0), clientLongitude.get(0));
+                                CustomerHome = new LatLng(clientHomeLatitude.get(0), clientHomeLongitude.get(0));
 
                                 Findroutes(start, end);
                             }
 
                             else if(Status.matches("PickedUp"))
                             {
-                                //Send notification to client
-                                end = new LatLng(clientHomeLatitude.get(0), clientHomeLongitude.get(0));
 
-                                Findroutes(start, end);
+                                CustomerHome = new LatLng(clientHomeLatitude.get(0), clientHomeLongitude.get(0));
+                                Findroutes(start, CustomerHome);
+                                try
+                                {
+                                    Thread thread2 = new Thread(new Runnable()
+                                    {
+                                        @Override
+                                        public void run()
+                                        {
+                                            try
+                                            {
+                                                Log.d("TAG", "Is it running?");
+
+                                                Log.d("TAG", start + " Findroutes" + CustomerHome);
+                                                InsideCircle(start, CustomerHome);
+                                                Log.d("TAG", start + " Inside Circle" + CustomerHome);
+
+                                            } catch (Exception e)
+                                            {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                    thread2.start();
+
+
+                                } catch
+                                (Exception e)
+                                {
+                                    e.printStackTrace();
+                                }
                             }
 
                             /*map.addCircle(new CircleOptions()
@@ -820,8 +753,38 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                     .radius(500)
                                     .strokeColor(Color.RED)
                                     .fillColor(Color.RED));*/
+                            if(document.getString("SMS").matches("Yes"))
+                            {
+                                try
+                                {
+                                    Thread thread1 = new Thread(new Runnable()
 
-                            if(document.getString("SMS").matches("No"))
+                                    {
+                                        @Override
+                                        public void run()
+                                        {
+                                            try
+                                            {
+                                                InsideCircle(start, end);
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                    thread1.start();
+
+                                }
+                                catch
+                                (Exception e)
+                                {
+                                    e.printStackTrace();
+                                }
+                            }
+
+
+                                if(document.getString("SMS").matches("No"))
                             {
                                 try
                                 {
@@ -857,9 +820,35 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                 {
                     Log.w(TAG, "Error getting documents.", task.getException());
                 }
+            }
+        });
+    }
 
+    private void updateOrder()
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //Read from database specifying with collection
+        db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task)
+            {
+                if (task.isSuccessful())
+                {
+                    for (QueryDocumentSnapshot document : task.getResult())
+                    {
+                        Log.d(TAG, "DRIVERS ID"+ user.getUid());
+                        if(document.getString("DriverUID").matches(user.getUid()) && document.getString("Status").matches("Active"))
+                        {
+                            document.getReference().update("Status", "PickedUp");
+                        }
 
-
+                    }
+                }
+                else
+                {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
             }
         });
     }
