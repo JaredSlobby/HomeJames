@@ -17,6 +17,13 @@
         android:theme="@style/Theme.HomeJamesWIL"
         tools:targetApi="31">
         <activity
+            android:name=".Admin_RegisterDriver"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Admin_Dashboard"
             android:exported="false">
             <meta-data
