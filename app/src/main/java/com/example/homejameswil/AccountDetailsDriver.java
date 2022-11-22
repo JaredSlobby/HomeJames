@@ -39,9 +39,10 @@ public class AccountDetailsDriver extends Fragment
     {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_account_details_driver, container, false);
+        SignOut();
         RetrieveDetails();
         rating();
-        SignOut();
+
         return view;
     }
 
@@ -58,12 +59,27 @@ public class AccountDetailsDriver extends Fragment
         //Connection to database
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        Bundle bundle = this.getArguments();
+
+        if(bundle != null)
+        {
+            bundle.getString("docID");
+            bundle.getString("userID");
+        }
+
         // Get logged in user UID
         user = FirebaseAuth.getInstance().getCurrentUser();
-        uid = user.getUid();
+        if(bundle.getString("userID").equals("True"))
+        {
+            uid = bundle.getString("docID");
+            btnSignOut.setVisibility(View.GONE);
+        }
+        else {
+            uid = user.getUid();
+        }
 
                 //Read from database specifying with collection
-                db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
                 {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task)
@@ -95,6 +111,11 @@ public class AccountDetailsDriver extends Fragment
     {
         //Set ratingBar
         rating.setRating(3.25f);
+    }
+
+    private void getBundle()
+    {
+
     }
 
     private void SignOut()

@@ -2,6 +2,8 @@ package com.example.homejameswil;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,7 +83,17 @@ public class Admin_Drivers extends Fragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                String DocumentID = docID.get(position);
+                Bundle bundle = new Bundle();
+                bundle.putString("docID", docID.get(position));
+                bundle.putString("userID", "True");
+
+                //String DocumentID = docID.get(position);
+
+                Fragment fragment = new AccountDetailsDriver();
+                fragment.setArguments(bundle);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.frameLayout, fragment);
+                ft.commit();
             }
         });
     }
