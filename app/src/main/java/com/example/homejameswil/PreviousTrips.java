@@ -26,7 +26,7 @@ import org.w3c.dom.Text;
 public class PreviousTrips extends Fragment
 {
     View view;
-    TextView  TripTimes, ReportDriver, DriverName, orderLocation, home, tripdate;
+    TextView  TripTimes, ReportDriver, DriverName, orderLocation, home, tripdate, triptime, triptimedropoff;
     FirebaseUser user;
     String uid, DriverUID, docID;
     @Override
@@ -39,6 +39,8 @@ public class PreviousTrips extends Fragment
         orderLocation = view.findViewById(R.id.LocationInformation);
         home = view.findViewById(R.id.LocationHome);
         tripdate = view.findViewById(R.id.TripDate);
+        triptime = view.findViewById(R.id.TripTimes);
+        triptimedropoff = view.findViewById(R.id.TripTimesDropOff);
         //ReportDriver = view.findViewById(R.id.ReportDriver);
 
         tripInformation();
@@ -81,6 +83,8 @@ public class PreviousTrips extends Fragment
                                 //testing.setText(document.getString("UserName") + " " + document.getString("UserSurname"));
                                 orderLocation.setText(document.getString("PickUpLocation"));
                                 tripdate.setText(document.getString("Date"));
+                                triptime.setText("Pickup Time: " + document.getString("TimeOfPickUp"));
+                                triptimedropoff.setText("Drop off Time: " + document.getString("TimeDroppedOff"));
 
 
                             }
