@@ -195,7 +195,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
         getMyLocation();
         getDriverOrderLocation();
         Log.d(TAG, "onMapReady: " + start + "End: " + end);
-        getCustomerHome();
+
 
         Drawable circleDrawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_up_arrow_circle);
         //BitmapDescriptor markerIcon = getMarkerIconFromDrawable(circleDrawable, 150, 150);
@@ -548,39 +548,6 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
         }
     }
 
-    private void getCustomerHome()
-    {
-        //Connection to database
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        // Get logged in user UID
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        uid = user.getUid();
-
-        //Read from database specifying with collection
-        db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-        {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task)
-            {
-                if (task.isSuccessful())
-                {
-                    for (QueryDocumentSnapshot document : task.getResult())
-                    {
-                        Log.d(TAG, "DRIVERS ID"+ user.getUid());
-                        if(document.getId().matches(clientUID.get(0)))
-                        {
-                            CustomerHome = new LatLng(document.getDouble("HomeLatitude"), document.getDouble("HomeLongitude"));
-                        }
-                    }
-                }
-                else
-                {
-                    Log.w(TAG, "Error getting documents.", task.getException());
-                }
-            }
-        });
-    }
 
     public void JsonFileHome(LatLng start, LatLng end) throws IOException
     {
@@ -833,18 +800,18 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                             clientHomeLongitude.add(document.getDouble("HomeLongitude"));
 
                             Log.d(TAG, "Client ordered lat test: " + clientLatitude + "Client Long: " + clientLongitude);
-
-                            if (Status.matches("Active"))
+                            if(Status.matches("Active"))
                             {
                                 //Send notification to client
                                 end = new LatLng(clientLatitude.get(0), clientLongitude.get(0));
 
                                 Findroutes(start, end);
                             }
+
                             else if(Status.matches("PickedUp"))
                             {
                                 //Send notification to client
-                                end = new LatLng(clientLatitude.get(0), clientLongitude.get(0));
+                                end = new LatLng(clientHomeLatitude.get(0), clientHomeLongitude.get(0));
 
                                 Findroutes(start, end);
                             }

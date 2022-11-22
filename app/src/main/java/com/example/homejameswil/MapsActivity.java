@@ -113,6 +113,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String uid;
 
     ArrayList<String> cName;
+    ArrayList<String> cHomeLatitude;
+    ArrayList<String> cHomeLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -137,20 +139,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         uid = user.getUid();
 
         cName = new ArrayList();
+        cHomeLatitude = new ArrayList();
+        cHomeLongitude = new ArrayList();
 
         //Read from database specifying with collection
-        db.collection("Users")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
+                    public void onComplete(@NonNull Task<QuerySnapshot> task)
+                    {
+                        if (task.isSuccessful())
+                        {
                             for (QueryDocumentSnapshot document : task.getResult())
                             {
                                 if(document.getId().matches(uid))
                                 {
                                     cName.add(document.getString("UserName"));
-
+                                    cHomeLatitude.add(document.getString("HomeLatitude"));
+                                    cHomeLongitude.add(document.getString("HomeLongitude"));
                                 }
                             }
                         }
@@ -160,7 +166,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     }
                 });
-
         buttonPress();
     }
 
@@ -195,11 +200,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //Check if permission is granted
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1)
         {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
                 isPermissionGranted = true;
                 Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show();
                 getCurrentLocation();
@@ -236,8 +243,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 customerLat = Double.valueOf(customerLocation.latitude);
                 customerLong = Double.valueOf(customerLocation.longitude);
 
-
-
                 Log.d(TAG, "MyLocation: TEST2.0" + customerLocation);
 
                 LatLng ltlng = new LatLng(location.getLatitude(), location.getLongitude());
@@ -252,46 +257,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-    @SuppressLint("WrongConstant")
-    private void createNotificationChannel()
-    {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name);
-            String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_MAX;
-            NotificationChannel channel = new NotificationChannel("1", name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-
-
-    public void notification()
-    {
-        createNotificationChannel();
-        // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(this, MapsActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "1")
-                .setSmallIcon(R.drawable.clubs)
-                .setContentTitle("My notification")
-                .setContentText("Hello World!")
-                //.setPriority(NotificationCompat.PRIORITY_MAX)
-                // Set the intent that will fire when the user taps the notification
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        //Display notification
-        notificationManager.notify(1, builder.build());
-    }
 
     private void DateAndTime()
     {
@@ -300,6 +265,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         numberPicker1 = bottomSheetView.findViewById(R.id.numberPicker1);
         numberPicker2 = bottomSheetView.findViewById(R.id.numberPicker2);
+
+
+
 
         //Set number picker values
         numberPicker1.setMinValue(0);
@@ -379,7 +347,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String Date = mDisplayDate.getText().toString();
                 Toast.makeText(MapsActivity.this, "Trip Request Sent" + Time + ": "+ Date, Toast.LENGTH_SHORT).show();
 
-
                 // Get logged in user UID
                 user = FirebaseAuth.getInstance().getCurrentUser();
                 uid = user.getUid();
@@ -395,8 +362,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 user.put("Longitude", customerLong);
                 user.put("Status", "Pending");
                 user.put("Name", cName.get(0));
-                user.put("HomeLatitude", );
-                user.put("HomeLongitude", );
+                user.put("HomeLatitude", cHomeLatitude.get(0));
+                user.put("HomeLongitude", cHomeLongitude.get(0));
 
                 //Writing to Firestore specifying collection path with custom set Document reference
                 // Add a new document with a generated ID
