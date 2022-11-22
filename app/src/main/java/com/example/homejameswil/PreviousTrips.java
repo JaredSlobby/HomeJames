@@ -44,7 +44,7 @@ public class PreviousTrips extends Fragment
         triptime = view.findViewById(R.id.TripTimes);
         triptimedropoff = view.findViewById(R.id.TripTimesDropOff);
         btnReport = view.findViewById(R.id.btnReport);
-        //ReportDriver = view.findViewById(R.id.ReportDriver);
+        ReportDriver = view.findViewById(R.id.btnReport);
 
         ReportDriver();
 
@@ -90,8 +90,6 @@ public class PreviousTrips extends Fragment
                                 tripdate.setText(document.getString("Date"));
                                 triptime.setText("Pickup Time: " + document.getString("TimeOfPickUp"));
                                 triptimedropoff.setText("Drop off Time: " + document.getString("TimeDroppedOff"));
-
-
                             }
                         }
                     }
@@ -145,15 +143,6 @@ public class PreviousTrips extends Fragment
                 Bundle bundleReport = new Bundle();
                 bundleReport.putString("docID", docID);
                 bundleReport.putString("DriverUID", DriverUID);
-
-
-                /*Fragment fragment = new ReportDriver();
-                fragment.setArguments(bundleReport);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.PreviousTripsFragment, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();*/
 
                 ReportDriver();
                 Fragment fragment = new ReportDriver();

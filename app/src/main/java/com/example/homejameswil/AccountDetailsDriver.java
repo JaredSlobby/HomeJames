@@ -42,7 +42,6 @@ public class AccountDetailsDriver extends Fragment
         SignOut();
         RetrieveDetails();
         rating();
-
         return view;
     }
 
@@ -71,14 +70,7 @@ public class AccountDetailsDriver extends Fragment
 
         // Get logged in user UID
         user = FirebaseAuth.getInstance().getCurrentUser();
-        if(bundle.getString("userID").equals("True"))
-        {
-            uid = bundle.getString("docID");
-            btnSignOut.setVisibility(View.GONE);
-        }
-        else {
-            uid = user.getUid();
-        }
+        uid = user.getUid();
 
                 //Read from database specifying with collection
         db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
@@ -111,13 +103,8 @@ public class AccountDetailsDriver extends Fragment
 
     private void rating()
     {
-        //Set ratingBar
+
         rating.setRating(3.25f);
-    }
-
-    private void getBundle()
-    {
-
     }
 
     private void SignOut()

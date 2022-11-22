@@ -65,9 +65,6 @@
             android:layout_height="match_parent">
             <include layout="@layout/previous_trip_locations"/>
             <include layout="@layout/previous_trip_time"/>
-
-
-
         </LinearLayout>
 
 
