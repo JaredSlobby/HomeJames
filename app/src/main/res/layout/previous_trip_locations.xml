@@ -41,20 +41,54 @@
         android:layout_height="wrap_content">
         <ImageView
             android:padding="3dp"
-            android:src="@drawable/previoustrip"
+            android:src="@drawable/cartrip"
             android:layout_width="35dp"
             android:layout_height="35dp"/>
         <TextView
-            android:text=""
+            android:text="Pickup Location"
             android:textStyle="bold"
+            android:layout_gravity="center"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:id="@+id/LocationInformation"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="7dp"
+            android:layout_marginStart="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:paddingLeft="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:padding="3dp"
+            android:src="@drawable/menunew"
+            android:layout_width="35dp"
+            android:layout_height="35dp"/>
+    </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:padding="3dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:padding="3dp"
+                android:src="@drawable/home"
+                android:layout_width="35dp"
+                android:layout_height="35dp"/>
+            <TextView
+                android:text="Home Address"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_gravity="center"
+                android:id="@+id/LocationHome"
+                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
 
     </LinearLayout>
 
