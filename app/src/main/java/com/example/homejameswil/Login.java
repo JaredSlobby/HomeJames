@@ -40,6 +40,7 @@ public class Login extends AppCompatActivity
 
 
         //Can david see this
+        //Can jared see this
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
