@@ -4,11 +4,14 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -24,6 +27,11 @@ public class AdminReports extends Fragment
 {
     View view;
     ArrayList<String> docID;
+    ArrayList<String> CustomerUID;
+    ArrayList<String> driverUID;
+    ArrayList<String> info;
+    ArrayList<String> reason;
+    ArrayList<String> tripID;
 
     ListView listReports;
     ArrayAdapter<String> adapter;
@@ -43,6 +51,11 @@ public class AdminReports extends Fragment
     {
 
         docID = new ArrayList<>();
+        CustomerUID = new ArrayList<>();
+        driverUID= new ArrayList<>();
+        info = new ArrayList<>();
+        reason = new ArrayList<>();
+        tripID = new ArrayList<>();
 
 
         listReports = view.findViewById(R.id.listReports);
@@ -62,6 +75,12 @@ public class AdminReports extends Fragment
                     for(QueryDocumentSnapshot document : task.getResult())
                     {
                         docID.add(document.getId());
+                        CustomerUID.add(document.getString("CustomerUID"));
+                        driverUID.add(document.getString("DriverUID"));
+                        info.add(document.getString("Info"));
+                        reason.add(document.getString("Reason"));
+                        tripID.add(document.getString("TripID"));
+
                     }
                 }
                 else
@@ -69,6 +88,37 @@ public class AdminReports extends Fragment
                     Log.d("TAG", "Error getting documents: ", task.getException());
                 }
                 adapter.notifyDataSetChanged();
+            }
+        });
+
+        listReports.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                //How to communicate between fragments
+                Bundle bundle = new Bundle();
+                bundle.putString("docID", docID.get(position));
+                bundle.putString("CustomerUID", CustomerUID.get(position));
+                bundle.putString("DriverUID", driverUID.get(position));
+                bundle.putString("Info", info.get(position));
+                bundle.putString("Reason", reason.get(position));
+                bundle.putString("TripID", tripID.get(position));
+
+
+                /*Fragment fragment = new ReportsInfo();
+                fragment.setArguments(bundle);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.AdminReportList, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();*/
+
+                Fragment fragment = new ReportsInfo();
+                fragment.setArguments(bundle);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.frameLayout, fragment);
+                ft.commit();
             }
         });
     }
