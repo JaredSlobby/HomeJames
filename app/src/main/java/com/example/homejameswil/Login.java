@@ -38,11 +38,9 @@ public class Login extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         //Can david see this
         //Can jared see this
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
 
         // Enable verbose OneSignal logging to debug issues if needed.
         OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
@@ -50,8 +48,6 @@ public class Login extends AppCompatActivity
         // OneSignal Initialization
         OneSignal.initWithContext(getApplicationContext());
         OneSignal.setAppId(ONESIGNAL_APP_ID);
-
-
 
         user_name = findViewById(R.id.email);
         pass_word = findViewById(R.id.password);
@@ -89,8 +85,6 @@ public class Login extends AppCompatActivity
                                                                            Intent intent = new Intent(Login.this, MainActivity.class);
                                                                            startActivity(intent);
                                                                            Log.d("TAG", "External User ID: " + firebaseAuth.getCurrentUser().getUid());
-
-
                                                                        }
                                                                        else if (document.getId().matches(firebaseAuth.getCurrentUser().getUid()) && document.getString("Status").matches("Admin"))
                                                                        {

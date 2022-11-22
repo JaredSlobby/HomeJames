@@ -48,7 +48,7 @@ public class Admin_RegisterDriver extends AppCompatActivity
         txtCellNumber = findViewById(R.id.CellNumber);
         txtVehType = findViewById(R.id.vehType);
         txtVehColor = findViewById(R.id.vehColour);
-        txtVehNumPlate = findViewById(R.id.vehNumPlate);
+        txtVehNumPlate = findViewById(R.id.vehPlate);
 
         btn2_signup = findViewById(R.id.btnRegister);
         mAuth = FirebaseAuth.getInstance();
