@@ -83,7 +83,7 @@ public class Admin_LandingPage extends Fragment
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         count = new ArrayList<>();
-        cnt = view.findViewById(R.id.activeDriverrr);
+        cnt = view.findViewById(R.id.activeDrivers);
         // Get logged in user UID
         user = FirebaseAuth.getInstance().getCurrentUser();
         uid = user.getUid();
