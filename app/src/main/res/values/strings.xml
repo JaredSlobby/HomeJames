@@ -54,5 +54,9 @@
     <string name="report">Report</string>
     <string name="editDriver">Edit</string>
     <string name="Vehicle_Number_Plate" />
+    <string name="car_type">Car Type</string>
+    <string name="car_colour">Car Colour</string>
+    <string name="vehicle_number_plate">Vehicle Number Plate</string>
+    <string name="edit_details">Edit Details</string>
 
 </resources>
