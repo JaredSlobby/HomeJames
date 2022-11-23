@@ -47,8 +47,7 @@ import java.util.Calendar;
 import java.util.Map;
 
 
-public class LandingPage extends Fragment
-{
+public class LandingPage extends Fragment {
     private static String TAG = "LandingPage";
     Location myLocation = null;
     protected LatLng customerLocation = null;
@@ -60,7 +59,6 @@ public class LandingPage extends Fragment
     Button btnPinMyHome;
     String uid;
     TextView cnt;
-    FirebaseFirestore db;
     private static final String ONESIGNAL_APP_ID = "556bf015-31aa-42d9-a448-4642ce2fb4b7";
 
     ArrayList<Double> HomeLatitude;
@@ -68,29 +66,23 @@ public class LandingPage extends Fragment
     ArrayList<String> count;
 
 
-
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_landing_page, container, false);
-        db = FirebaseFirestore.getInstance();
-        //getDriverCount();
+
         // Get logged in user UID
         user = FirebaseAuth.getInstance().getCurrentUser();
         uid = user.getUid();
-
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         HomeLatitude = new ArrayList<>();
         HomeLongitude = new ArrayList<>();
-        count = new ArrayList<>();
 
 
 
         //CheckIfHomeSet();
         Welcome();
         location();
-
 
 
         // Enable verbose OneSignal logging to debug issues if needed.
@@ -101,7 +93,7 @@ public class LandingPage extends Fragment
         OneSignal.setAppId(ONESIGNAL_APP_ID);
 
         OneSignal.promptForPushNotifications();
-
+        getDriverCount();
         currentActiveTrip();
 
         //OneSignal.addTrigger("User_ID", "True");
@@ -112,24 +104,19 @@ public class LandingPage extends Fragment
     }
 
 
-    private void location()
-    {
+    private void location() {
         // Initialize map fragment
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
 
-
         // Async map
 
-        supportMapFragment.getMapAsync(new OnMapReadyCallback()
-        {
+        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
             @SuppressLint("MissingPermission")
             @Override
-            public void onMapReady(GoogleMap googleMap)
-            {
+            public void onMapReady(GoogleMap googleMap) {
                 boolean success = googleMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json)));
-                if (!success)
-                {
+                if (!success) {
                     Log.e(TAG, "Style parsing failed.");
                 }
                 //Setting my location and hiding gestures test
@@ -137,11 +124,9 @@ public class LandingPage extends Fragment
                 googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                 googleMap.getUiSettings().setAllGesturesEnabled(false);
 
-                googleMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener()
-                {
+                googleMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
                     @Override
-                    public void onMyLocationChange(Location location)
-                    {
+                    public void onMyLocationChange(Location location) {
                         myLocation = location;
                         //Convert location to LatLong
                         customerLocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -151,8 +136,7 @@ public class LandingPage extends Fragment
                         LatLng ltlng = new LatLng(location.getLatitude(), location.getLongitude());
                         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(ltlng, 15f);
 
-                        if (myLocationFound == false)
-                        {
+                        if (myLocationFound == false) {
                             googleMap.moveCamera(cameraUpdate);
                             myLocationFound = true;
                         }
@@ -160,20 +144,13 @@ public class LandingPage extends Fragment
                 });
 
 
-
-
-                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener()
-                {
+                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
-                    public void onMapClick(LatLng latLng)
-                    {
+                    public void onMapClick(LatLng latLng) {
                         int x = 0;
-                        if(HomeLongitude.size() == 0 && HomeLatitude.size() == 0)
-                        {
+                        if (HomeLongitude.size() == 0 && HomeLatitude.size() == 0) {
                             Toast.makeText(getContext(), "Please pin your home before ordering a driver!", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
+                        } else {
 
                             Log.d(TAG, "Message:" + HomeLatitude.size() + " " + HomeLongitude.size());
                             Intent intent = new Intent(getActivity(), MapsActivity.class);
@@ -185,65 +162,99 @@ public class LandingPage extends Fragment
         });
     }
 
+    private void getDriverCount()
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        count = new ArrayList<>();
+        cnt = view.findViewById(R.id.activeDriverrr);
+        // Get logged in user UID
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        uid = user.getUid();
+
+
+        //Read from database specifying with collection
+        db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task)
+            {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult())
+                    {
+                        if(document.getString("Status").matches("Active") || document.getString("Status").matches("PickedUp"))
+                        {
+                            count.add(document.getId());
+                            int size = count.size();
+                            String sizeString = String.valueOf(size);
+
+
+
+                                cnt.setText(sizeString);
+
+                            Log.d(TAG, "Total count: " + size);
+                            Log.d(TAG, "Count total Array: " + count);
+
+                        }
+                        else
+                        {
+                            cnt.setText("0");
+                        }
+                    }
+                }
+                else
+                {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
+            }
+        });
+    }
+
+
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         Welcome();
     }
 
 
-    private void Welcome()
-    {
+    private void Welcome() {
         //Welcome message
         user = FirebaseAuth.getInstance().getCurrentUser();
         welcome = view.findViewById(R.id.welcome);
 
 
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         //Read from database specifying with collection
-        db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-        {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task)
-                    {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult())
-                            {
-                                if(document.getId().matches(user.getUid()))
-                                {
-                                    welcome.setText("Welcome " + document.getString("UserName") + " " + document.getString("UserSurname"));
+        db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (document.getId().matches(user.getUid())) {
+                            welcome.setText("Welcome " + document.getString("UserName") + " " + document.getString("UserSurname"));
 
-                                    if(document.getDouble("HomeLatitude") == null && document.getDouble("HomeLongitude") == null )
-                                    {
-                                        Log.d(TAG, "Testing check home" +  HomeLatitude + " " +  HomeLongitude);
-                                    }
-                                    else
-                                    {
-                                        HomeLatitude.add(document.getDouble("HomeLatitude"));
-                                        HomeLongitude.add(document.getDouble("HomeLongitude"));
-                                        Log.d(TAG, "Testing check home" +  HomeLatitude + " " +  HomeLongitude);
-                                    }
-                                }
+                            if (document.getDouble("HomeLatitude") == null && document.getDouble("HomeLongitude") == null) {
+                                Log.d(TAG, "Testing check home" + HomeLatitude + " " + HomeLongitude);
+                            } else {
+                                HomeLatitude.add(document.getDouble("HomeLatitude"));
+                                HomeLongitude.add(document.getDouble("HomeLongitude"));
+                                Log.d(TAG, "Testing check home" + HomeLatitude + " " + HomeLongitude);
                             }
                         }
-                        else
-                        {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
                     }
-                });
+                } else {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
+            }
+        });
 
         btnPinMyHome = view.findViewById(R.id.PinHome);
 
-        btnPinMyHome.setOnClickListener(new View.OnClickListener()
-        {
+        btnPinMyHome.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), HomeMaps.class);
                 startActivity(intent);
             }
@@ -258,8 +269,7 @@ public class LandingPage extends Fragment
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
 
-        switch (day)
-        {
+        switch (day) {
             case Calendar.SUNDAY:
                 workingHours.setText(Sunday);
                 break;
@@ -274,79 +284,31 @@ public class LandingPage extends Fragment
         }
 
 
-
     }
 
-    private void currentActiveTrip()
-    {
+    private void currentActiveTrip() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        cnt = view.findViewById(R.id.activeDriverrr);
-        count = new ArrayList<>();
-
-        //Read from database specifying with collection
-        db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-        {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task)
-            {
-                if (task.isSuccessful())
-                {
-                    for (QueryDocumentSnapshot document : task.getResult())
-                    {
-                        if (document.getString("UID").matches(user.getUid()) && document.getString("Status").matches("Active"))
-                        {
-
-
-
-
-                            count.add(document.getId());
-
-                            int size = count.size();
-                            cnt.setText(size);
-
-                            Log.d(TAG, "Count drivers" + count);
-
-                            //Do What I want for now
-                            Toast.makeText(getContext(), "You have an active trip", Toast.LENGTH_SHORT).show();
-                            
-                        }
-                    }
-                }
-                else
-                {
-                    Log.w(TAG, "Error getting documents.", task.getException());
-                }
-            }
-        });
-    }}
-
-    /*private void getDriverCount() {
-
-
-        cnt = view.findViewById(R.id.activeDriverrr);
-
-        count = new ArrayList<>();
-        Log.d(TAG,"Testing arraylist: " + count);
 
         //Read from database specifying with collection
         db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    Log.d(TAG,"Message:" + count);
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        if (document.getString("Status").matches("Active") || document.getString("Status").matches("PickedUp"))
-                        {
+                        if (document.getString("UID").matches(user.getUid()) && document.getString("Status").matches("Active")) {
+                            //Do What I want for now
+                            Toast.makeText(getContext(), "You have an active trip", Toast.LENGTH_SHORT).show();
 
-                            count.add(document.getId());
-
-                            int size = count.size();
-                            cnt.setText(size);
-                            Log.d(TAG, "Amount of drivers:" + size);
                         }
                     }
+                } else {
+                    Log.w(TAG, "Error getting documents.", task.getException());
                 }
             }
-        });*/
+        });
+    }
+}
+
+
 
 
