@@ -109,6 +109,8 @@ public class Register extends AppCompatActivity
                             user.put("UserStreetName", txtStreetName.getText().toString());
                             user.put("UserSuburb", txtSuburb.getText().toString());
                             user.put("UserCellNumber", txtCellNumber.getText().toString());
+                            user.put("HomeLatitude", "");
+                            user.put("HomeLongitude", "");
 
                             db.collection("Users").document(uid).set(user).addOnSuccessListener(new OnSuccessListener<Void>()
                                     {

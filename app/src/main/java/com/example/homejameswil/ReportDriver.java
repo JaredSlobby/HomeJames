@@ -118,7 +118,7 @@ public class ReportDriver extends Fragment
                             }
                         });
 
-
+                Toast.makeText(getContext(), "Thank you for your report!", Toast.LENGTH_SHORT).show();
 
                 Fragment fragment = new LandingPage();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();

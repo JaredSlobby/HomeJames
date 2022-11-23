@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,7 @@ import com.onesignal.OneSignal;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Map;
 
@@ -56,7 +58,12 @@ public class LandingPage extends Fragment
     TextView welcome, workingHours;
     FirebaseUser user;
     Button btnPinMyHome;
+    String uid;
     private static final String ONESIGNAL_APP_ID = "556bf015-31aa-42d9-a448-4642ce2fb4b7";
+
+    ArrayList<Double> HomeLatitude;
+    ArrayList<Double> HomeLongitude;
+
 
 
 
@@ -64,8 +71,20 @@ public class LandingPage extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         view = inflater.inflate(R.layout.fragment_landing_page, container, false);
+
+        // Get logged in user UID
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        uid = user.getUid();
+
+        HomeLatitude = new ArrayList<>();
+        HomeLongitude = new ArrayList<>();
+
+
+
+        CheckIfHomeSet();
         Welcome();
         location();
+
 
         // Enable verbose OneSignal logging to debug issues if needed.
         OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
@@ -90,6 +109,8 @@ public class LandingPage extends Fragment
     {
         // Initialize map fragment
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
+
 
         // Async map
 
@@ -139,13 +160,60 @@ public class LandingPage extends Fragment
                     @Override
                     public void onMapClick(LatLng latLng)
                     {
-                        Intent intent = new Intent(getActivity(), MapsActivity.class);
-                        startActivity(intent);
+                        int x = 0;
+                        if(HomeLongitude.size() == 0 && HomeLatitude.size() == 0)
+                        {
+                            Toast.makeText(getContext(), "Please pin your home before ordering a driver!", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+
+                            Log.d(TAG, "Message:" + HomeLatitude.size() + " " + HomeLongitude.size());
+                            Intent intent = new Intent(getActivity(), MapsActivity.class);
+                            startActivity(intent);
+                        }
                     }
                 });
             }
         });
     }
+
+    private void CheckIfHomeSet()
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task)
+            {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult())
+                    {
+                        if(document.getId().matches(uid))
+                        {
+                            if(document.getDouble("HomeLatitude") == null && document.getDouble("HomeLongitude") == null )
+                            {
+                                Log.d(TAG, "Testing check home" +  HomeLatitude + " " +  HomeLongitude);
+                            }
+                            else
+                            {
+                                HomeLatitude.add(document.getDouble("HomeLatitude"));
+                                HomeLongitude.add(document.getDouble("HomeLongitude"));
+                                Log.d(TAG, "Testing check home" +  HomeLatitude + " " +  HomeLongitude);
+                            }
+
+                        }
+                    }
+                }
+                else
+                {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
+            }
+        });
+    }
+
 
     private void Welcome()
     {

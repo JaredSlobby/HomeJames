@@ -2,15 +2,19 @@ package com.example.homejameswil;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -123,6 +127,7 @@ public class HomeMaps extends FragmentActivity implements OnMapReadyCallback
                             @Override
                             public void onSuccess(Void aVoid)
                             {
+                                Toast.makeText(getApplicationContext(), "Your home has been saved!", Toast.LENGTH_SHORT).show();
                                 Log.d(TAG, "DocumentSnapshot added with ID:" );
                             }
                         })
@@ -131,11 +136,13 @@ public class HomeMaps extends FragmentActivity implements OnMapReadyCallback
                             @Override
                             public void onFailure(@NonNull Exception e)
                             {
+                                Toast.makeText(getApplicationContext(), "Oh no, there was an error saving your home!", Toast.LENGTH_SHORT).show();
                                 Log.w(TAG, "Error adding document", e);
                             }
                         });
                 Log.d("TAG", "onMapClick COORDINATES: " + customerLocation.latitude + " " + customerLocation.longitude);
             }
+
         });
 
     }

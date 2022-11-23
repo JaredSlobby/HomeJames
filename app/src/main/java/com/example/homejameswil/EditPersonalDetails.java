@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,7 @@ public class EditPersonalDetails extends Fragment
     FirebaseAuth auth;
     ImageButton btnBack;
     Button btnUpdate;
+    boolean test;
 
     String uid;
 
@@ -165,23 +167,30 @@ public class EditPersonalDetails extends Fragment
                     }
                 });*/
 
+        if(TextUtils.isEmpty(txtName.getText().toString()) && TextUtils.isEmpty(txtSurname.getText().toString()) && TextUtils.isEmpty(txtIDNumber.getText().toString()) && TextUtils.isEmpty(txtStreetName.getText().toString())
+                && TextUtils.isEmpty(txtSuburb.getText().toString()) && TextUtils.isEmpty(txtCellNumber.getText().toString()))
+        {
+            test = true;
 
-        db.collection("Users").document(uid)
-                .set(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>()
-                {
-                    @Override
-                    public void onSuccess(Void aVoid)
-                    {
-                        Log.d(TAG, "DocumentSnapshot added with ID:" );
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
+            Toast.makeText(getContext(), "Please fill in all your details!", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            test = false;
+            db.collection("Users").document(uid)
+                    .set(user)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "DocumentSnapshot added with ID:");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error adding document", e);
+                        }
+                    });
+        }
 
 
         /*FirebaseUser user_ = FirebaseAuth.getInstance().getCurrentUser();
@@ -241,11 +250,19 @@ public class EditPersonalDetails extends Fragment
             @Override
             public void onClick(View v)
             {
-                EditPersonalDetailsCustomer();
-                Fragment fragment = new AccountDetails();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.frameLayout, fragment);
-                ft.commit();
+                if(test == false)
+                {
+                    EditPersonalDetailsCustomer();
+                    Fragment fragment = new AccountDetails();
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.frameLayout, fragment);
+                    ft.commit();
+                }
+                else if(test)
+                {
+                    getFragmentManager().beginTransaction().replace(R.id.frameLayout, new EditPersonalDetails()).commit();
+                }
+
             }
         });
     }
