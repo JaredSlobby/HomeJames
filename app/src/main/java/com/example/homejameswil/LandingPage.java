@@ -60,6 +60,7 @@ public class LandingPage extends Fragment
     Button btnPinMyHome;
     String uid;
     TextView cnt;
+    FirebaseFirestore db;
     private static final String ONESIGNAL_APP_ID = "556bf015-31aa-42d9-a448-4642ce2fb4b7";
 
     ArrayList<Double> HomeLatitude;
@@ -73,10 +74,12 @@ public class LandingPage extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         view = inflater.inflate(R.layout.fragment_landing_page, container, false);
-        getDriverCount();
+        db = FirebaseFirestore.getInstance();
+        //getDriverCount();
         // Get logged in user UID
         user = FirebaseAuth.getInstance().getCurrentUser();
         uid = user.getUid();
+
 
         HomeLatitude = new ArrayList<>();
         HomeLongitude = new ArrayList<>();
@@ -277,6 +280,8 @@ public class LandingPage extends Fragment
     private void currentActiveTrip()
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        cnt = view.findViewById(R.id.activeDriverrr);
+        count = new ArrayList<>();
 
         //Read from database specifying with collection
         db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
@@ -290,6 +295,17 @@ public class LandingPage extends Fragment
                     {
                         if (document.getString("UID").matches(user.getUid()) && document.getString("Status").matches("Active"))
                         {
+
+
+
+
+                            count.add(document.getId());
+
+                            int size = count.size();
+                            cnt.setText(size);
+
+                            Log.d(TAG, "Count drivers" + count);
+
                             //Do What I want for now
                             Toast.makeText(getContext(), "You have an active trip", Toast.LENGTH_SHORT).show();
                             
@@ -302,10 +318,10 @@ public class LandingPage extends Fragment
                 }
             }
         });
-    }
+    }}
 
-    private void getDriverCount() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+    /*private void getDriverCount() {
+
 
         cnt = view.findViewById(R.id.activeDriverrr);
 
@@ -331,8 +347,6 @@ public class LandingPage extends Fragment
                     }
                 }
             }
-        });
+        });*/
 
 
-    }
-}
