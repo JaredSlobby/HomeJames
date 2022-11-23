@@ -57,8 +57,6 @@ public class RegisterDriver extends Fragment
     @SuppressLint("NotConstructor")
     private void RegisterDriver()
     {
-
-
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         user_name = view.findViewById(R.id.txtDriverEmail);

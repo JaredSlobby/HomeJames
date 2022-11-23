@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Admin_LandingPage extends Fragment
@@ -30,6 +31,8 @@ public class Admin_LandingPage extends Fragment
     FirebaseUser user;
     String uid;
     TextView welcome, workingHours;
+    ArrayList<String> count;
+    TextView cnt;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -73,5 +76,52 @@ public class Admin_LandingPage extends Fragment
                 workingHours.setText(MondayToSaturday);
                 break;
         }
+    }
+
+    private void getDriverCount()
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        count = new ArrayList<>();
+        cnt = view.findViewById(R.id.activeDriverrr);
+        // Get logged in user UID
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        uid = user.getUid();
+
+
+        //Read from database specifying with collection
+        db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task)
+            {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult())
+                    {
+                        if(document.getString("Status").matches("Active") || document.getString("Status").matches("PickedUp"))
+                        {
+                            count.add(document.getId());
+                            int size = count.size();
+                            String sizeString = String.valueOf(size);
+
+
+                            // Jared
+                            cnt.setText(sizeString);
+
+                            Log.d(TAG, "Total count: " + size);
+                            Log.d(TAG, "Count total Array: " + count);
+
+                        }
+                        else
+                        {
+                            cnt.setText("0");
+                        }
+                    }
+                }
+                else
+                {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
+            }
+        });
     }
 }
