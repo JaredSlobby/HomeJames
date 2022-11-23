@@ -41,6 +41,7 @@ public class Admin_LandingPage extends Fragment
         view = inflater.inflate(R.layout.fragment_admin__landing_page, container, false);
 
         Welcome();
+        getDriverCount();
 
         return view;
     }
