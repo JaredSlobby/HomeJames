@@ -81,7 +81,7 @@ public class LandingPage extends Fragment
 
 
 
-        CheckIfHomeSet();
+        //CheckIfHomeSet();
         Welcome();
         location();
 
@@ -206,7 +206,12 @@ public class LandingPage extends Fragment
     }*/
 
 
-
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        Welcome();
+    }
 
     private void Welcome()
     {

@@ -51,13 +51,12 @@ public class EditPersonalDetails extends Fragment
     {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_edit_personal_details, container, false);
+        btnUpdate = view.findViewById(R.id.btnSave);
 
         RetrieveUserDetails();
-
-
-
-        GoBack();
         Update();
+        GoBack();
+
 
         return view;
     }
@@ -148,34 +147,27 @@ public class EditPersonalDetails extends Fragment
         user.put("UserStreetName", txtStreetName.getText().toString());
         user.put("UserSuburb", txtSuburb.getText().toString());
 
-        /*userStatus.put("Email", Email.getText().toString());
 
 
-        db.collection("UserStatus").document(uid)
-                .set(userStatus)
-                .addOnSuccessListener(new OnSuccessListener<Void>()
-                {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot added with ID:" );
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });*/
 
-        if(TextUtils.isEmpty(txtName.getText().toString()) && TextUtils.isEmpty(txtSurname.getText().toString()) && TextUtils.isEmpty(txtIDNumber.getText().toString()) && TextUtils.isEmpty(txtStreetName.getText().toString())
-                && TextUtils.isEmpty(txtSuburb.getText().toString()) && TextUtils.isEmpty(txtCellNumber.getText().toString()))
+
+
+        /*if(TextUtils.isEmpty(txtName.getText().toString()) || TextUtils.isEmpty(txtSurname.getText().toString()) || TextUtils.isEmpty(txtIDNumber.getText().toString()) || TextUtils.isEmpty(txtStreetName.getText().toString())
+                || TextUtils.isEmpty(txtSuburb.getText().toString()) || TextUtils.isEmpty(txtCellNumber.getText().toString()))
         {
-            test = true;
 
-            Toast.makeText(getContext(), "Please fill in all your details!", Toast.LENGTH_SHORT).show();
+
+            btnUpdate.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    Toast.makeText(getContext(), "Please fill in all your details!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
         }
-        else {
-            test = false;
+        else {*/
             db.collection("Users").document(uid)
                     .set(user)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -190,38 +182,9 @@ public class EditPersonalDetails extends Fragment
                             Log.w(TAG, "Error adding document", e);
                         }
                     });
+
         }
 
-
-        /*FirebaseUser user_ = FirebaseAuth.getInstance().getCurrentUser();
-
-        String email = "";
-        final String password = "";
-
-        // Get auth credentials from the user for re-authentication
-        AuthCredential credential = EmailAuthProvider.getCredential(email, password); // Current Login Credentials
-
-        // Prompt the user to re-provide their sign-in credentials
-        user_.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-                Log.d("value", "User re-authenticated.");
-
-                // Now change your email address \\
-                //----------------Code for Changing Email Address----------\\
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                user.updateEmail(Email.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getActivity(), "Email Changed" + " Current Email is " + Email.getText().toString(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-            }
-        });*/
-    }
 
 
     private void GoBack()
@@ -241,28 +204,57 @@ public class EditPersonalDetails extends Fragment
         });
     }
 
+    private boolean validateFields() {
+
+        if (TextUtils.isEmpty(txtName.getText().toString())) {
+            txtName.setError("Please fill in your name");
+            return false;
+        } else if (TextUtils.isEmpty(txtSurname.getText().toString())) {
+            txtSurname.setError("Please fill in your surname");
+            return false;
+        } else if (txtIDNumber.getText().length() < 13) {
+            txtIDNumber.setError("Enter a valid 13 digit ID Number");
+            return false;
+        }
+
+            else if (txtIDNumber.getText().length() > 13) {
+                txtIDNumber.setError("Enter a valid 13 digit ID Number");
+                return false;
+            }
+         else if (TextUtils.isEmpty(txtStreetName.getText().toString())) {
+            txtStreetName.setError("Please fill in your street name");
+            return false;
+        } else if (TextUtils.isEmpty(txtSuburb.getText().toString())) {
+            txtSuburb.setError("Please fill in your suburb");
+            return false;
+        } else if (txtCellNumber.getText().length() < 10) {
+            txtCellNumber.setError("Please enter in a valid 10 digit number");
+            return false;
+            }
+            else if (txtCellNumber.getText().length() > 10) {
+                    txtCellNumber.setError("Please enter in a valid 10 digit number");
+                    return false;
+        } else {
+            return true;
+        }
+    }
+
     private void Update()
     {
-        btnUpdate = view.findViewById(R.id.btnSave);
+
 
         btnUpdate.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                if(test == false)
-                {
-                    EditPersonalDetailsCustomer();
-                    Fragment fragment = new AccountDetails();
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.replace(R.id.frameLayout, fragment);
-                    ft.commit();
-                }
-                else if(test)
-                {
-                    getFragmentManager().beginTransaction().replace(R.id.frameLayout, new EditPersonalDetails()).commit();
-                }
-
+                    if(validateFields()) {
+                        EditPersonalDetailsCustomer();
+                        Fragment fragment = new AccountDetails();
+                        FragmentTransaction ft = getFragmentManager().beginTransaction();
+                        ft.replace(R.id.frameLayout, fragment);
+                        ft.commit();
+                    }
             }
         });
     }
