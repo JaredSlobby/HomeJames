@@ -178,7 +178,7 @@ public class LandingPage extends Fragment
         });
     }
 
-    private void CheckIfHomeSet()
+    /*private void CheckIfHomeSet()
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -192,16 +192,7 @@ public class LandingPage extends Fragment
                     {
                         if(document.getId().matches(uid))
                         {
-                            if(document.getDouble("HomeLatitude") == null && document.getDouble("HomeLongitude") == null )
-                            {
-                                Log.d(TAG, "Testing check home" +  HomeLatitude + " " +  HomeLongitude);
-                            }
-                            else
-                            {
-                                HomeLatitude.add(document.getDouble("HomeLatitude"));
-                                HomeLongitude.add(document.getDouble("HomeLongitude"));
-                                Log.d(TAG, "Testing check home" +  HomeLatitude + " " +  HomeLongitude);
-                            }
+
 
                         }
                     }
@@ -212,7 +203,9 @@ public class LandingPage extends Fragment
                 }
             }
         });
-    }
+    }*/
+
+
 
 
     private void Welcome()
@@ -237,6 +230,16 @@ public class LandingPage extends Fragment
                                 {
                                     welcome.setText("Welcome " + document.getString("UserName") + " " + document.getString("UserSurname"));
 
+                                    if(document.getDouble("HomeLatitude") == null && document.getDouble("HomeLongitude") == null )
+                                    {
+                                        Log.d(TAG, "Testing check home" +  HomeLatitude + " " +  HomeLongitude);
+                                    }
+                                    else
+                                    {
+                                        HomeLatitude.add(document.getDouble("HomeLatitude"));
+                                        HomeLongitude.add(document.getDouble("HomeLongitude"));
+                                        Log.d(TAG, "Testing check home" +  HomeLatitude + " " +  HomeLongitude);
+                                    }
                                 }
                             }
                         }
