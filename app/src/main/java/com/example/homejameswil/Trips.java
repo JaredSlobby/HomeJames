@@ -71,7 +71,7 @@ public class Trips extends Fragment
         DriverUID = new ArrayList();
         TimeOfPickUp = new ArrayList();
 
-        adapter = new ArrayAdapter(view.getContext(), R.layout.whitetext, list);
+        adapter = new ArrayAdapter(view.getContext(), R.layout.lists, R.id.CategoryNameListView, list);
         printPrevOrders.setAdapter(adapter);
 
         // Get logged in user UID

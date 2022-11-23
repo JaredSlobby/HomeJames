@@ -161,9 +161,9 @@ public class Fragment_rides extends Fragment
 
         @SuppressLint("ResourceType") ColorDrawable white = new ColorDrawable(this.getResources().getColor(R.drawable.white));
         listview.setDivider(white);
-        listview.setDividerHeight(3);
+        //listview.setDividerHeight(3);
 
-        adapter = new ArrayAdapter(view.getContext(), R.layout.whitetext, printList);
+        adapter = new ArrayAdapter(view.getContext(), R.layout.lists, R.id.CategoryNameListView, printList);
         listview.setAdapter(adapter);
 
 

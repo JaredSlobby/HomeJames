@@ -54,7 +54,7 @@ public class ReportDriver extends Fragment
         ReportDriver = view.findViewById(R.id.DropDown);
 
         String[] Reason = new String[]{"Sexual Assault", "Bad Driving", "Inappropriate Behaviour", "Late","Other"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item, Reason);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.lists, R.id.CategoryNameListView, Reason);
         ReportDriver.setAdapter(adapter);
 
         ReportDriver.setOnItemClickListener(new AdapterView.OnItemClickListener()
