@@ -3,17 +3,17 @@
     <item
         android:id="@+id/Home"
         android:enabled="true"
-        android:icon="@drawable/clubs"
+        android:icon="@drawable/home_nav"
         android:title="@string/home"/>
     <item
         android:id="@+id/Rides"
         android:enabled="true"
-        android:icon="@drawable/clubs"
+        android:icon="@drawable/trip_nav"
         android:title="@string/rides"/>
 
     <item
         android:id="@+id/Account"
         android:enabled="true"
-        android:icon="@drawable/clubs"
+        android:icon="@drawable/user_nav"
         android:title="@string/account"/>
 </menu>

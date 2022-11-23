@@ -19,6 +19,12 @@ public class Admin_Dashboard extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_dashboard);
 
+        //Set default fragment to load
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout, new Admin_LandingPage());
+        fragmentTransaction.commit();
+
 
         navigationBarView = findViewById(R.id.bottom_navigation_admin);
 
@@ -31,7 +37,7 @@ public class Admin_Dashboard extends AppCompatActivity
                 switch (item.getItemId())
                 {
                     case R.id.Home:
-                        replaceFragment(new LandingPage());
+                        replaceFragment(new Admin_LandingPage());
                         return true;
                     case R.id.Drivers:
                         replaceFragment(new Admin_Drivers());
@@ -53,11 +59,11 @@ public class Admin_Dashboard extends AppCompatActivity
         fragmentTransaction.commit();
     }
 
-    private void replaceFragment(LandingPage landingPage)
+    private void replaceFragment(Admin_LandingPage admin_landingPage)
     {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, landingPage);
+        fragmentTransaction.replace(R.id.frameLayout, admin_landingPage);
         fragmentTransaction.commit();
     }
 

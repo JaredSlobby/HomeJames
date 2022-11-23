@@ -58,5 +58,7 @@
     <string name="car_colour">Car Colour</string>
     <string name="vehicle_number_plate">Vehicle Number Plate</string>
     <string name="edit_details">Edit Details</string>
+    <string name="export">Export</string>
+    <string name="registerDriver">Register</string>
 
 </resources>

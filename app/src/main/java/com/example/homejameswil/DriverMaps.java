@@ -277,8 +277,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                 int k = polyline.getPoints().size();
                 polylineEndLatLng = polyline.getPoints().get(k - 1);
                 polylines.add(polyline);
-                polyline.getPoints().get(0);
-                Log.d(TAG, "PolyLinePoints: " + polyline.getPoints().get(0) + " " + polyline.getPoints().get(1));
+
             }
             else
             {

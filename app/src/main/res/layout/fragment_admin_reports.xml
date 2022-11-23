@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/AdminReportList"
     tools:context=".AdminReports"
-    android:background="@drawable/backgroundimage">
+    android:background="@color/NewBackground">
 
     <!-- TODO: Update blank fragment layout -->
     <ListView

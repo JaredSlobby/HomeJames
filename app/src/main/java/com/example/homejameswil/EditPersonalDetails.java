@@ -169,7 +169,7 @@ public class EditPersonalDetails extends Fragment
         }
         else {*/
             db.collection("Users").document(uid)
-                    .set(user)
+                    .update(user)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

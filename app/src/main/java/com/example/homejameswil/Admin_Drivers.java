@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,12 +29,14 @@ public class Admin_Drivers extends Fragment
     ArrayList<String> driverName;
     ListView listDrivers;
     ArrayAdapter<String> adapter;
+    Button btnRegister;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_admin__drivers, container, false);
         driversAccounts();
+        registerDriver();
         return view;
     }
 
@@ -91,6 +94,23 @@ public class Admin_Drivers extends Fragment
 
                 Fragment fragment = new AccountDetailsDriver();
                 fragment.setArguments(bundle);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.frameLayout, fragment);
+                ft.commit();
+            }
+        });
+    }
+
+    private void registerDriver()
+    {
+        btnRegister = view.findViewById(R.id.btnRegisterDriver);
+
+        btnRegister.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Fragment fragment = new RegisterDriver();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.frameLayout, fragment);
                 ft.commit();
