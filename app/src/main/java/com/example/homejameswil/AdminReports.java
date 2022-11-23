@@ -60,7 +60,7 @@ public class AdminReports extends Fragment
 
         listReports = view.findViewById(R.id.listReports);
 
-        adapter = new ArrayAdapter(view.getContext(), R.layout.whitetext, docID);
+        adapter = new ArrayAdapter(view.getContext(), R.layout.lists, R.id.CategoryNameListView, docID);
         listReports.setAdapter(adapter);
 
 

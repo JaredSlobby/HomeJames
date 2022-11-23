@@ -53,7 +53,7 @@ public class Admin_Drivers extends Fragment
 
         listDrivers = view.findViewById(R.id.listDrivers);
 
-        adapter = new ArrayAdapter(view.getContext(), R.layout.whitetext, driverName);
+        adapter = new ArrayAdapter(view.getContext(), R.layout.lists, R.id.CategoryNameListView, driverName);
         listDrivers.setAdapter(adapter);
 
         //Read from database specifying with collection
