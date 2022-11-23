@@ -59,10 +59,12 @@ public class LandingPage extends Fragment
     FirebaseUser user;
     Button btnPinMyHome;
     String uid;
+    TextView cnt;
     private static final String ONESIGNAL_APP_ID = "556bf015-31aa-42d9-a448-4642ce2fb4b7";
 
     ArrayList<Double> HomeLatitude;
     ArrayList<Double> HomeLongitude;
+    ArrayList<String> count;
 
 
 
@@ -71,19 +73,21 @@ public class LandingPage extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         view = inflater.inflate(R.layout.fragment_landing_page, container, false);
-
+        getDriverCount();
         // Get logged in user UID
         user = FirebaseAuth.getInstance().getCurrentUser();
         uid = user.getUid();
 
         HomeLatitude = new ArrayList<>();
         HomeLongitude = new ArrayList<>();
+        count = new ArrayList<>();
 
 
 
         //CheckIfHomeSet();
         Welcome();
         location();
+
 
 
         // Enable verbose OneSignal logging to debug issues if needed.
@@ -270,7 +274,6 @@ public class LandingPage extends Fragment
 
     }
 
-
     private void currentActiveTrip()
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -301,5 +304,35 @@ public class LandingPage extends Fragment
         });
     }
 
+    private void getDriverCount() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        cnt = view.findViewById(R.id.activeDriverrr);
+
+        count = new ArrayList<>();
+        Log.d(TAG,"Testing arraylist: " + count);
+
+        //Read from database specifying with collection
+        db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG,"Message:" + count);
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (document.getString("Status").matches("Active") || document.getString("Status").matches("PickedUp"))
+                        {
+
+                            count.add(document.getId());
+
+                            int size = count.size();
+                            cnt.setText(size);
+                            Log.d(TAG, "Amount of drivers:" + size);
+                        }
+                    }
+                }
+            }
+        });
+
+
+    }
 }
