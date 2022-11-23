@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, trips);
         fragmentTransaction.commit();
-
     }
 
     private void replaceFragment(LandingPage landingPage)

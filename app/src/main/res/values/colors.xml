@@ -12,5 +12,6 @@
     <color name="homeJames">#fd8d3c</color>
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#fff</color>
     <drawable name="white">#FFFFFF</drawable>
+    <color name="list">#1a1a1a</color>
 
 </resources>
