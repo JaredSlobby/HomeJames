@@ -100,7 +100,6 @@ public class PreviousTrips extends Fragment
                 }
             });
 
-
             //Check database for DriverUID
             db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
             {

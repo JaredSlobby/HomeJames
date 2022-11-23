@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -16,12 +17,14 @@ public class ReportsInfo extends Fragment
 {
     View view;
     String TAG = "Firebase";
+    TextView DriverName, ReportReason, ReportInfo;
 
     ArrayList<String> list;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState)
+    {
         // Inflate the layout for this fragment
          view = inflater.inflate(R.layout.fragment_reports_info, container, false);
          getInfo();
@@ -30,6 +33,13 @@ public class ReportsInfo extends Fragment
 
     private void getInfo()
     {
+
+        DriverName = view.findViewById(R.id.nameDriver);
+        ReportReason = view.findViewById(R.id.ReportReason);
+        ReportInfo = view.findViewById(R.id.ReportInfo);
+
+
+
         Bundle bundle = this.getArguments();
 
         if(bundle != null)
@@ -42,8 +52,6 @@ public class ReportsInfo extends Fragment
             String TripID = bundle.getString("TripID");
 
             Log.d(TAG,"Admin Complaints" + docID + CustomerUID + DriverUID + Info + Reason + TripID);
-
         }
-
     }
 }

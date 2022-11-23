@@ -185,11 +185,8 @@ public class EditPersonalDetails extends Fragment
 
         }
 
-
-
     private void GoBack()
     {
-
         btnBack = view.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener()
         {
@@ -204,8 +201,8 @@ public class EditPersonalDetails extends Fragment
         });
     }
 
-    private boolean validateFields() {
-
+    private boolean validateFields()
+    {
         if (TextUtils.isEmpty(txtName.getText().toString())) {
             txtName.setError("Please fill in your name");
             return false;

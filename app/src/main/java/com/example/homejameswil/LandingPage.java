@@ -178,33 +178,13 @@ public class LandingPage extends Fragment
         });
     }
 
-    /*private void CheckIfHomeSet()
+
+    @Override
+    public void onResume()
     {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-        {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task)
-            {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult())
-                    {
-                        if(document.getId().matches(uid))
-                        {
-
-
-                        }
-                    }
-                }
-                else
-                {
-                    Log.w(TAG, "Error getting documents.", task.getException());
-                }
-            }
-        });
-    }*/
-
+        super.onResume();
+        Welcome();
+    }
 
     @Override
     public void onResume()
@@ -227,7 +207,8 @@ public class LandingPage extends Fragment
         db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
         {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    public void onComplete(@NonNull Task<QuerySnapshot> task)
+                    {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult())
                             {
@@ -314,6 +295,7 @@ public class LandingPage extends Fragment
                         {
                             //Do What I want for now
                             Toast.makeText(getContext(), "You have an active trip", Toast.LENGTH_SHORT).show();
+                            
                         }
                     }
                 }

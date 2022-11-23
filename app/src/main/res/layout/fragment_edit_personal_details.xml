@@ -8,8 +8,6 @@
     tools:context=".EditPersonalDetails"
     android:background="@drawable/backgroundimage">
 
-
-
     <Button
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"

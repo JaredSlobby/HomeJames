@@ -13,6 +13,5 @@
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#fff</color>
     <drawable name="white">#FFFFFF</drawable>
     <color name="list">#1a1a1a</color>
-    <color name="Dish">#f7770f</color>
 
 </resources>
