@@ -60,5 +60,6 @@
     <string name="edit_details">Edit Details</string>
     <string name="export">Export</string>
     <string name="registerDriver">Register</string>
+    <string name="welcome_admin">Welcome Admin</string>
 
 </resources>
