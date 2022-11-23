@@ -64,12 +64,14 @@ public class AccountDetailsDriver extends Fragment
 
         if(bundle != null)
         {
+            btnSignOut.setVisibility(View.GONE);
             bundle.getString("docID");
             bundle.getString("userID");
 
             uid = bundle.getString("docID");
         }
-        else {
+        else
+        {
 
             // Get logged in user UID
             user = FirebaseAuth.getInstance().getCurrentUser();

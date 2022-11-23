@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".Trips"
     android:id="@+id/tripsFragment"
-    android:background="@drawable/background01">
+    android:background="@color/NewBackground">
 
     <!-- TODO: Update blank fragment layout -->
 
