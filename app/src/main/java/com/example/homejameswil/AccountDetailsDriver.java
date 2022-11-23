@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,13 +23,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
 
 public class AccountDetailsDriver extends Fragment
 {
     TextView name, idNumber, numPlate, vehBrand, colour, cellNumber;
     View view;
     RatingBar rating;
-    Button btnSignOut;
+    Button btnSignOut, btnEdit;
+    ArrayList<String> docID;
 
     String TAG = "Firebase";
 
@@ -42,6 +46,7 @@ public class AccountDetailsDriver extends Fragment
         SignOut();
         RetrieveDetails();
         rating();
+        edit();
         return view;
     }
 
@@ -54,6 +59,7 @@ public class AccountDetailsDriver extends Fragment
         vehBrand = view.findViewById(R.id.vehBrand);
         colour = view.findViewById(R.id.vehColour);
         cellNumber = view.findViewById(R.id.cellNumber);
+        btnEdit = view.findViewById(R.id.btnEdit);
 
         //Connection to database
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -72,7 +78,7 @@ public class AccountDetailsDriver extends Fragment
         }
         else
         {
-
+            btnEdit.setVisibility(View.GONE);
             // Get logged in user UID
             user = FirebaseAuth.getInstance().getCurrentUser();
             uid = user.getUid();
@@ -111,6 +117,32 @@ public class AccountDetailsDriver extends Fragment
     {
 
         rating.setRating(3.25f);
+    }
+
+    private void edit()
+    {
+        btnEdit = view.findViewById(R.id.btnEdit);
+
+        btnEdit.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Bundle b = getArguments();
+                String dUID = b.getString("docID");
+                Bundle bundle = new Bundle();
+                bundle.putString("docID", dUID);
+                //bundle.putString("userID", "True");
+
+                //String DocumentID = docID.get(position);
+
+                Fragment fragment = new EditDriverInfo();
+                fragment.setArguments(bundle);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.frameLayout, fragment);
+                ft.commit();
+            }
+        });
     }
 
     private void SignOut()

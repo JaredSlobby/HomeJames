@@ -52,5 +52,7 @@
     <string name="dropoff_time">Dropoff Time</string>
     <string name="previous_trip">Previous Trip</string>
     <string name="report">Report</string>
+    <string name="editDriver">Edit</string>
+    <string name="Vehicle_Number_Plate" />
 
 </resources>
