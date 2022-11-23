@@ -188,7 +188,7 @@ public class LandingPage extends Fragment {
                             String sizeString = String.valueOf(size);
 
 
-
+                            // Jared
                                 cnt.setText(sizeString);
 
                             Log.d(TAG, "Total count: " + size);
