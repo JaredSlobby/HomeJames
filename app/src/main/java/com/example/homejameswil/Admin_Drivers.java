@@ -1,4 +1,6 @@
 package com.example.homejameswil;
+import android.annotation.SuppressLint;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -53,6 +55,8 @@ public class Admin_Drivers extends Fragment
 
         listDrivers = view.findViewById(R.id.listDrivers);
 
+        @SuppressLint("ResourceType") ColorDrawable white = new ColorDrawable(this.getResources().getColor(R.drawable.white));
+        listDrivers.setDivider(white);
         adapter = new ArrayAdapter(view.getContext(), R.layout.lists, R.id.CategoryNameListView, driverName);
         listDrivers.setAdapter(adapter);
 

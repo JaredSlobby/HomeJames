@@ -1,5 +1,7 @@
 package com.example.homejameswil;
 
+import android.annotation.SuppressLint;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -59,7 +61,8 @@ public class AdminReports extends Fragment
 
 
         listReports = view.findViewById(R.id.listReports);
-
+        @SuppressLint("ResourceType") ColorDrawable white = new ColorDrawable(this.getResources().getColor(R.drawable.white));
+        listReports.setDivider(white);
         adapter = new ArrayAdapter(view.getContext(), R.layout.lists, R.id.CategoryNameListView, docID);
         listReports.setAdapter(adapter);
 
