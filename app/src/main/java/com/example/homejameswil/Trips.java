@@ -62,8 +62,8 @@ public class Trips extends Fragment
         printPrevOrders = view.findViewById(R.id.printPrevOrders);
 
         @SuppressLint("ResourceType") ColorDrawable white = new ColorDrawable(this.getResources().getColor(R.drawable.white));
-        printPrevOrders.setDivider(white);
-        printPrevOrders.setDividerHeight(3);
+        //printPrevOrders.setDivider(white);
+        //printPrevOrders.setDividerHeight(3);
 
         list = new ArrayList();
         DocID = new ArrayList();
