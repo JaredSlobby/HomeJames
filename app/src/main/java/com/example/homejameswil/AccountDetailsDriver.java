@@ -66,11 +66,15 @@ public class AccountDetailsDriver extends Fragment
         {
             bundle.getString("docID");
             bundle.getString("userID");
-        }
 
-        // Get logged in user UID
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        uid = user.getUid();
+            uid = bundle.getString("docID");
+        }
+        else {
+
+            // Get logged in user UID
+            user = FirebaseAuth.getInstance().getCurrentUser();
+            uid = user.getUid();
+        }
 
                 //Read from database specifying with collection
         db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
