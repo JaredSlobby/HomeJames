@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:alpha="1"
                 android:src="@drawable/roundlist"
-                app:foregroundTint ="@color/dish"/>
+                />
 
         </RelativeLayout>
 

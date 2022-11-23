@@ -186,12 +186,6 @@ public class LandingPage extends Fragment
         Welcome();
     }
 
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        Welcome();
-    }
 
     private void Welcome()
     {
