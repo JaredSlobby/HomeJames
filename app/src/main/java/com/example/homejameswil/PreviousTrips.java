@@ -142,6 +142,7 @@ public class PreviousTrips extends Fragment
                 Bundle bundleReport = new Bundle();
                 bundleReport.putString("docID", docID);
                 bundleReport.putString("DriverUID", DriverUID);
+                bundleReport.putString("DriverName", DriverName.getText().toString());
 
                 ReportDriver();
                 Fragment fragment = new ReportDriver();

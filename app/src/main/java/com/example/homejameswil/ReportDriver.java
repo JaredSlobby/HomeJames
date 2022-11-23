@@ -36,7 +36,7 @@ public class ReportDriver extends Fragment
     EditText info;
     Button btnReportDriver;
     FirebaseUser user;
-    String uid, DriverUID, docID;
+    String uid, DriverUID, docID, DriverName;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -75,6 +75,8 @@ public class ReportDriver extends Fragment
         {
             DriverUID = bundleReport.getString("DriverUID");
             docID = bundleReport.getString("docID");
+            DriverName = bundleReport.getString("DriverName");
+
 
         }
 
@@ -98,6 +100,7 @@ public class ReportDriver extends Fragment
                 report.put("Reason", ReportDriver.getText().toString());
                 report.put("Info", info.getText().toString());
                 report.put("TripID", docID);
+                report.put("DriverName", DriverName);
 
                 //Writing to Firestore specifying collection path with custom set Document reference
                 // Add a new document with a generated ID

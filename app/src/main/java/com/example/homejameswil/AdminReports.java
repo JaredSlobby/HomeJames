@@ -83,7 +83,6 @@ public class AdminReports extends Fragment
                         info.add(document.getString("Info"));
                         reason.add(document.getString("Reason"));
                         tripID.add(document.getString("TripID"));
-
                     }
                 }
                 else
