@@ -168,6 +168,9 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
     private FirebaseDatabase rootNode;
     FirebaseUser user;
     String uid;
+    Boolean ToCustomer = false;
+    Boolean ToHome = false;
+    Boolean bottomSheet = false;
 
 
     @Override
@@ -277,7 +280,6 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                 int k = polyline.getPoints().size();
                 polylineEndLatLng = polyline.getPoints().get(k - 1);
                 polylines.add(polyline);
-
             }
             else
             {
@@ -307,8 +309,6 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
     }
 
     boolean myLocationFound = false;
-
-
     //Suppress warning
     @SuppressWarnings("MissingPermission")
     //to get user location
@@ -333,6 +333,15 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
 
                 driverLat = location.getLatitude();
                 driverLng = location.getLongitude();
+
+
+                if (!myLocationFound)
+                {
+                    myLocationFound = true;
+                    //Find routes
+                    Findroutes(start, end);
+                }
+
 
 
                 driverRealTimeLocation();
@@ -382,22 +391,78 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
         Log.d(TAG, "Testing Realtime" + dl);
     }
 
+
+
+    private void ToCustomer()
+    {
+        if (!ToCustomer)
+        {
+            Thread thread = new Thread()
+            {
+                @Override
+                public void run()
+                {
+                    try
+                    {
+                        Log.d(TAG, "Is this running? Customer");
+                        JsonFileHome(start, end);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            thread.start();
+        }
+    }
+
+    private void ToHome()
+    {
+        if (!ToHome)
+        {
+            Thread thread2 = new Thread()
+            {
+                @Override
+                public void run()
+                {
+                    try
+                    {
+                        Log.d(TAG, "Is this running? Home");
+                        JsonFileHome(start, CustomerHome);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            thread2.start();
+        }
+    }
+
+
+
     private void InsideCircle(LatLng ending)
     {
         float distanceInMeters = 0;
         while(!radius)
         {
-            //Run every 5 seconds
+            //Run every 10 seconds
             try
             {
                 Log.d(TAG, "InsideCircle: " + radius);
-                Thread.sleep(5000);
+                Thread.sleep(10000);
                 //Check distance between driver and client
                 float[] results = new float[1];
                 Location.distanceBetween(start.latitude, start.longitude, ending.latitude, ending.longitude, results);
                 Log.d(TAG, "Distance between driver and client: " + start.latitude + " " + start.longitude + " " + ending.latitude + " " + ending.longitude + " " + results[0]);
                 distanceInMeters = results[0];
+                ToCustomer();
+                ToHome();
+
                 Log.d(TAG, "Distance between driver and client: " + distanceInMeters);
+
                 //Findroutes(starting, ending);
 
                 if (distanceInMeters <= 200)
@@ -418,6 +483,9 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                     bottomSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_bottom_sheet_driver_home, findViewById(R.id.bottomSheetTripHome));
                                     try
                                     {
+                                        bottomSheet = true;
+                                        ToCustomer = true;
+                                        ToHome = false;
                                         JsonFileHome(start, CustomerHome);
                                     }
                                     catch (IOException e)
@@ -434,6 +502,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                             Findroutes(start, CustomerHome);
                                             bottomSheetDialog.dismiss();
                                             updateOrder("PickedUp");
+                                            bottomSheet = false;
                                         }
                                     });
 
@@ -442,6 +511,10 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                 {
                                     bottomSheetDialog = new BottomSheetDialog(DriverMaps.this, R.style.BottomSheetDialogTheme);
                                     bottomSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_bottom_sheet_driver_dropped_off, findViewById(R.id.bottomSheetTripDroppedOff));
+
+                                    bottomSheet = false;
+                                    ToHome = false;
+                                    ToCustomer = true;
 
                                     Button button = bottomSheetView.findViewById(R.id.btnTripDroppedOf);
                                     button.setOnClickListener(new View.OnClickListener()
@@ -551,10 +624,29 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                 {
                                     //Update UI
                                     //Set distanceString and durationString to textview
+
+
+                                    if (bottomSheet)
+                                    {
                                     TextView distance = bottomSheetView.findViewById(R.id.DistanceOfHome);
                                     TextView duration = bottomSheetView.findViewById(R.id.TimeOfArrivalHome);
                                     distance.setText(distanceStringHome);
                                     duration.setText(durationStringHome);
+                                    }
+                                    if(ToHome == false)
+                                    {
+                                        TextView address = findViewById(R.id.distance_map);
+                                        address.setText("\n" + distanceStringHome);
+                                        TextView time = findViewById(R.id.time_map);
+                                        time.setText("\n" + durationStringHome);
+                                    }
+                                    if (ToCustomer == false)
+                                    {
+                                        TextView address = findViewById(R.id.distance_map);
+                                        address.setText("\n" + distanceStringHome);
+                                        TextView time = findViewById(R.id.time_map);
+                                        time.setText("\n" + durationStringHome);
+                                    }
                                 }
                             });
                         }
@@ -575,30 +667,6 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
     //[                         ]
     //[                         ]
     //[                         ]
-
-
-    private double bearingBetweenLocations(LatLng latLng1, LatLng latLng2)
-    {
-        double PI = 3.14159;
-        double lat1 = latLng1.latitude * PI / 180;
-        double long1 = latLng1.longitude * PI / 180;
-        double lat2 = latLng2.latitude * PI / 180;
-        double long2 = latLng2.longitude * PI / 180;
-
-        double dLon = (long2 - long1);
-
-        double y = Math.sin(dLon) * Math.cos(lat2);
-        double x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1)
-                * Math.cos(lat2) * Math.cos(dLon);
-
-        double brng = Math.atan2(y, x);
-
-        brng = Math.toDegrees(brng);
-        brng = (brng + 360) % 360;
-
-        return brng;
-    }
-
 
     private void sendNotification() throws IOException
     {
@@ -702,7 +770,10 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                             {
                                 end = new LatLng(clientLatitude.get(0), clientLongitude.get(0));
                                 CustomerHome = new LatLng(clientHomeLatitude.get(0), clientHomeLongitude.get(0));
+                                ToHome = true;
+                                ToCustomer = false;
                                 Findroutes(start, end);
+
                             }
 
                             else if(Status.matches("PickedUp"))
@@ -718,8 +789,11 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                         {
                                             try
                                             {
+                                                Log.d("TAG", "Are you running right now?");
                                                 Log.d("TAG", "Is it running?");
-
+                                                CustomerHome = new LatLng(clientHomeLatitude.get(0), clientHomeLongitude.get(0));
+                                                ToHome = false;
+                                                ToCustomer = true;
                                                 Log.d("TAG", start + " Findroutes" + CustomerHome);
                                                 InsideCircle(CustomerHome);
                                                 Log.d("TAG", start + " Inside Circle" + CustomerHome);
@@ -830,6 +904,9 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                             if(Update.matches("PickedUp"))
                             {
                                 //Get current time
+                                ToHome = false;
+                                ToCustomer = true;
+
                                 Calendar calendar = Calendar.getInstance();
                                 SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm");
                                 String strDate = mdformat.format(calendar.getTime());
@@ -840,11 +917,15 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                     Thread thread = new Thread(new Runnable()
                                     {
                                         @Override
-                                        public void run() {
-                                            try {
+                                        public void run()
+                                        {
+                                            try
+                                            {
                                                 sendNotification();
                                                 InsideCircle(end);
-                                            } catch (Exception e) {
+                                            }
+                                            catch (Exception e)
+                                            {
                                                 e.printStackTrace();
                                             }
                                         }
@@ -864,8 +945,10 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                 Calendar calendar = Calendar.getInstance();
                                 SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm");
                                 String strDate = mdformat.format(calendar.getTime());
-
+                                ToHome = true;
                                 document.getReference().update("TimeDroppedOff", strDate);
+                                Intent intent = new Intent(DriverMaps.this, DriverMainActivity.class);
+                                startActivity(intent);
                             }
                         }
                     }

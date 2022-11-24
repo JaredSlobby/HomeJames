@@ -1,9 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+<fragment
     android:id="@+id/map"
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="550dp"
     tools:context="com.example.homejameswil.DriverMaps" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/homeJames">
+        <LinearLayout
+            android:layout_width="40dp"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="Distance \n Distance"
+            android:textColor="@color/white"
+            android:id="@+id/distance_map"
+            android:layout_marginTop="5dp"
+            android:textSize="25sp"/>
+
+
+        <LinearLayout
+            android:layout_width="130dp"
+            android:layout_height="200dp"/>
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="Time \n\nTime"
+            android:id="@+id/time_map"
+            android:textColor="@color/white"
+            android:layout_marginTop="5dp"
+            android:textSize="25sp"/>
+
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>
