@@ -321,7 +321,7 @@ public class LandingPage extends Fragment {
                         {
                             //Do What I want for now
                             document.getString("DriverName");
-                            String DriverUID = document.getString("DriverUID");
+                            String DriverUID = document.getString("DriverName");
                             carViewClick(DriverUID);
                         }
                     }
