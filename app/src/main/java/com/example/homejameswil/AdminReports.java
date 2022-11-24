@@ -44,15 +44,12 @@ public class AdminReports extends Fragment
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_admin_reports, container, false);
 
-
         getReports();
         return view;
     }
 
-
     private void getReports()
     {
-
         docID = new ArrayList<>();
         CustomerUID = new ArrayList<>();
         driverUID= new ArrayList<>();
@@ -61,13 +58,11 @@ public class AdminReports extends Fragment
         tripID = new ArrayList<>();
         DriverName = new ArrayList<>();
 
-
         listReports = view.findViewById(R.id.listReports);
         @SuppressLint("ResourceType") ColorDrawable white = new ColorDrawable(this.getResources().getColor(R.drawable.white));
         listReports.setDivider(white);
         adapter = new ArrayAdapter(view.getContext(), R.layout.lists, R.id.CategoryNameListView, DriverName);
         listReports.setAdapter(adapter);
-
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Reports").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
@@ -111,13 +106,6 @@ public class AdminReports extends Fragment
                 bundle.putString("TripID", tripID.get(position));
                 bundle.putString("DriverName", DriverName.get(position));
 
-                /*Fragment fragment = new ReportsInfo();
-                fragment.setArguments(bundle);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.AdminReportList, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();*/
 
                 Fragment fragment = new ReportsInfo();
                 fragment.setArguments(bundle);
