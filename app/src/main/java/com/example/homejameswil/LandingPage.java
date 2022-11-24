@@ -320,7 +320,7 @@ public class LandingPage extends Fragment {
                         if (document.getString("UID").matches(user.getUid()) && document.getString("Status").matches("Active"))
                         {
                             //Do What I want for now
-                            document.getString("Name");
+                            document.getString("DriverName");
                             String DriverUID = document.getString("DriverUID");
                             carViewClick(DriverUID);
                         }
