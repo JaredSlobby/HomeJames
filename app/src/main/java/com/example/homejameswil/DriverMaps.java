@@ -14,6 +14,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.maps.android.SphericalUtil;
 import com.twilio.Twilio;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -458,6 +461,8 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                 Location.distanceBetween(start.latitude, start.longitude, ending.latitude, ending.longitude, results);
                 Log.d(TAG, "Distance between driver and client: " + start.latitude + " " + start.longitude + " " + ending.latitude + " " + ending.longitude + " " + results[0]);
                 distanceInMeters = results[0];
+
+                Log.d(TAG, "To Home Value" + ToHome);
                 ToCustomer();
                 ToHome();
 
@@ -470,6 +475,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                     Log.d(TAG, "Distance Driver HAS ARRIVED" + distanceInMeters);
                     radius = true;
                     Log.d(TAG, "Distance Driver HAS ARRIVED: " + radius);
+                    Log.d(TAG, "Ending value: " + ending);
                     if(radius)
                     {
                         runOnUiThread(new Runnable()
@@ -483,13 +489,19 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                     bottomSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_bottom_sheet_driver_home, findViewById(R.id.bottomSheetTripHome));
                                     try
                                     {
-                                        bottomSheet = true;
-                                        ToCustomer = true;
-                                        ToHome = false;
+                                        ToHome = true;
+                                        ToCustomer = false;
+
+                                        //Sleep for 10 seconds
+                                        Thread.sleep(300);
+                                        Log.d(TAG, "InsideCircle: " + radius);
                                         JsonFileHome(start, CustomerHome);
+                                        bottomSheet = true;
                                     }
                                     catch (IOException e)
                                     {
+                                        e.printStackTrace();
+                                    } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
 
@@ -502,6 +514,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                             Findroutes(start, CustomerHome);
                                             bottomSheetDialog.dismiss();
                                             updateOrder("PickedUp");
+                                            radius = false;
                                             bottomSheet = false;
                                         }
                                     });
@@ -509,12 +522,21 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                 }
                                 else if(ending == CustomerHome)
                                 {
+                                    Log.d(TAG, "It is making it to else if statement?");
                                     bottomSheetDialog = new BottomSheetDialog(DriverMaps.this, R.style.BottomSheetDialogTheme);
                                     bottomSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_bottom_sheet_driver_dropped_off, findViewById(R.id.bottomSheetTripDroppedOff));
 
                                     bottomSheet = false;
                                     ToHome = false;
                                     ToCustomer = true;
+                                    try
+                                    {
+                                        JsonFileHome(start, CustomerHome);
+                                    }
+                                    catch (IOException e)
+                                    {
+                                        e.printStackTrace();
+                                    }
 
                                     Button button = bottomSheetView.findViewById(R.id.btnTripDroppedOf);
                                     button.setOnClickListener(new View.OnClickListener()
@@ -616,6 +638,12 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                             originAddress = originAddress.replace("\"", "");
 
 
+                            //format distance string to double
+                            String[] distanceArray = distanceStringHome.split(" ");
+                            double distanceDouble = Double.parseDouble(distanceArray[0]);
+
+
+
                             //Update UI using method
                             runOnUiThread(new Runnable()
                             {
@@ -636,16 +664,35 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                     if(ToHome == false)
                                     {
                                         TextView address = findViewById(R.id.distance_map);
-                                        address.setText("\n" + distanceStringHome);
+                                        address.setText("Distance" +"\n" + distanceStringHome);
                                         TextView time = findViewById(R.id.time_map);
-                                        time.setText("\n" + durationStringHome);
+                                        time.setText("Distance" + "\n" + durationStringHome);
+                                        if (distanceDouble < 99 && distanceDouble > 0)
+                                        {
+                                            bottomSheetDialog = new BottomSheetDialog(DriverMaps.this, R.style.BottomSheetDialogTheme);
+                                            bottomSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_bottom_sheet_driver_dropped_off, findViewById(R.id.bottomSheetTripDroppedOff));
+                                            Button button = bottomSheetView.findViewById(R.id.btnTripDroppedOf);
+                                            button.setOnClickListener(new View.OnClickListener()
+                                            {
+                                                @Override
+                                                public void onClick(View view)
+                                                {
+                                                    bottomSheetDialog.dismiss();
+                                                    updateOrder("Completed");
+                                                    map.clear();
+                                                }
+                                            });
+                                            bottomSheetDialog.setContentView(bottomSheetView);
+                                            bottomSheetDialog.show();
+                                        }
+
                                     }
                                     if (ToCustomer == false)
                                     {
                                         TextView address = findViewById(R.id.distance_map);
-                                        address.setText("\n" + distanceStringHome);
+                                        address.setText("Distance" + "\n" + distanceStringHome);
                                         TextView time = findViewById(R.id.time_map);
-                                        time.setText("\n" + durationStringHome);
+                                        time.setText("Duration" + "\n" + durationStringHome);
                                     }
                                 }
                             });
@@ -779,7 +826,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                             else if(Status.matches("PickedUp"))
                             {
                                 CustomerHome = new LatLng(clientHomeLatitude.get(0), clientHomeLongitude.get(0));
-                                Findroutes(start, CustomerHome);
+
                                 try
                                 {
                                     Thread thread2 = new Thread(new Runnable()
@@ -806,6 +853,8 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                         }
                                     });
                                     thread2.start();
+                                    Findroutes(start, CustomerHome);
+
 
 
                                 } catch
@@ -906,6 +955,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                 //Get current time
                                 ToHome = false;
                                 ToCustomer = true;
+                                //InsideCircle(CustomerHome);
 
                                 Calendar calendar = Calendar.getInstance();
                                 SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm");
@@ -959,5 +1009,71 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                 }
             }
         });
+    }
+
+    private void animateMarkerNew(final LatLng startPosition, final LatLng destination, final Marker marker) {
+        if (marker != null)
+        {
+
+            final LatLng endPosition = new LatLng(destination.latitude, destination.longitude);
+            final float startRotation = marker.getRotation();
+            final LatLngInterpolator latLngInterpolator = new LatLngInterpolator.LinearFixed();
+            ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
+            valueAnimator.setDuration(1005); // duration 3 second
+            valueAnimator.setInterpolator(new LinearInterpolator());
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation)
+                {
+                    try {
+                        float v = animation.getAnimatedFraction();
+                        LatLng newPosition = latLngInterpolator.interpolate(v, startPosition, endPosition);
+                        marker.setPosition(newPosition);
+                        Log.d("newPosition", newPosition.toString());
+                        map.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
+                                .target(newPosition)
+                                .zoom(18f)
+                                .tilt(35)
+                                .bearing(getBearing(startPosition, endPosition))
+                                .build()));
+                        marker.setRotation(getBearing(startPosition, new LatLng(destination.latitude, destination.longitude)));
+                    }
+                    catch (Exception ex)
+                    {
+                        //I don't care atm.. I am tired
+                    }
+                }
+            });
+            valueAnimator.addListener(new AnimatorListenerAdapter()
+            {
+                @Override
+                public void onAnimationEnd(Animator animation)
+                {
+                    super.onAnimationEnd(animation);
+                    // if (mMarker != null) {
+                    // mMarker.remove();
+                    // }
+                    // mMarker = googleMap.addMarker(new MarkerOptions().position(endPosition).icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_car)));
+                }
+            });
+            valueAnimator.start();
+        }
+    }
+
+
+    private float getBearing(LatLng begin, LatLng end)
+    {
+        double lat = Math.abs(begin.latitude - end.latitude);
+        double lng = Math.abs(begin.longitude - end.longitude);
+
+        if (begin.latitude < end.latitude && begin.longitude < end.longitude)
+            return (float) (Math.toDegrees(Math.atan(lng / lat)));
+        else if (begin.latitude >= end.latitude && begin.longitude < end.longitude)
+            return (float) ((90 - Math.toDegrees(Math.atan(lng / lat))) + 90);
+        else if (begin.latitude >= end.latitude && begin.longitude >= end.longitude)
+            return (float) (Math.toDegrees(Math.atan(lng / lat)) + 180);
+        else if (begin.latitude < end.latitude && begin.longitude >= end.longitude)
+            return (float) ((90 - Math.toDegrees(Math.atan(lng / lat))) + 270);
+        return -1;
     }
 }
