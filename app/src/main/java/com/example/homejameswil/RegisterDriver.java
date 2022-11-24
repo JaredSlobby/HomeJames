@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +39,7 @@ public class RegisterDriver extends Fragment
     Button btn2_signup;
     EditText user_name, pass_word,txtName, txtSurname, txtIDNumber, txtCellNumber, txtVehType, txtVehColour, txtVehNumPlate;
     FirebaseAuth mAuth;
+    ImageButton btnBack;
 
     FirebaseUser user;
     String uid;
@@ -49,6 +51,7 @@ public class RegisterDriver extends Fragment
 
         BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_navigation_admin);
         navBar.setVisibility(View.GONE);
+        goBack();
 
         RegisterDriver();
         return view;
@@ -158,6 +161,22 @@ public class RegisterDriver extends Fragment
                         }
                     }
                 });
+            }
+        });
+    }
+
+    private void goBack()
+    {
+        btnBack = view.findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Fragment fragment = new AccountDetails();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.frameLayout, fragment);
+                ft.commit();
             }
         });
     }
