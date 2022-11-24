@@ -106,18 +106,8 @@ public class AccountDetailsDriver extends Fragment
         if(b != null)
         {
            uid = b.getString("docID");
-           hide = b.getString("Hide");
-           Log.d(TAG, "Hide: " + b.getString("Hide"));
-            if(hide == "Yes")
-            {
-                btnExport.setVisibility(View.INVISIBLE);
-                btnEdit.setVisibility(View.INVISIBLE);
-            }
-            else
-            {
-                btnExport.setVisibility(View.VISIBLE);
-                btnEdit.setVisibility(View.VISIBLE);
-            }
+
+
         }
         else
         {
@@ -312,6 +302,17 @@ public class AccountDetailsDriver extends Fragment
             bundle.getString("userID");
 
             uid = bundle.getString("docID");
+            String hide = bundle.getString("Hide");
+            if(hide == "Yes")
+            {
+                btnExport.setVisibility(View.INVISIBLE);
+                btnEdit.setVisibility(View.INVISIBLE);
+            }
+            else
+            {
+                btnExport.setVisibility(View.VISIBLE);
+                btnEdit.setVisibility(View.VISIBLE);
+            }
         }
         else
         {

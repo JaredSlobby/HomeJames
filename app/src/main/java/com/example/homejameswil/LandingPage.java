@@ -345,7 +345,7 @@ public class LandingPage extends Fragment {
             {
                 Bundle bundle = new Bundle();
                 bundle.putString("docID", driverUID);
-                bundle.putString("Hide", "Yes");
+                bundle.putString("Hide", "true");
 
                 Fragment fragment = new AccountDetailsDriver();
                 fragment.setArguments(bundle);
