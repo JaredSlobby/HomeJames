@@ -65,7 +65,7 @@ public class AdminReports extends Fragment
         listReports = view.findViewById(R.id.listReports);
         @SuppressLint("ResourceType") ColorDrawable white = new ColorDrawable(this.getResources().getColor(R.drawable.white));
         listReports.setDivider(white);
-        adapter = new ArrayAdapter(view.getContext(), R.layout.lists, R.id.CategoryNameListView, docID);
+        adapter = new ArrayAdapter(view.getContext(), R.layout.lists, R.id.CategoryNameListView, DriverName);
         listReports.setAdapter(adapter);
 
 
