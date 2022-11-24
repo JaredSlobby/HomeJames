@@ -61,5 +61,6 @@
     <string name="export">Export</string>
     <string name="registerDriver">Register</string>
     <string name="welcome_admin">Welcome Admin</string>
+    <string name="available_orders">Available Orders</string>
 
 </resources>
