@@ -107,6 +107,7 @@ public class AccountDetailsDriver extends Fragment
         {
            uid = b.getString("docID");
            hide = b.getString("Hide");
+           Log.d(TAG, "Hide: " + b.getString("Hide"));
             if(hide == "Yes")
             {
                 btnExport.setVisibility(View.INVISIBLE);
