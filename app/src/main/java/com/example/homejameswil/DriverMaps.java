@@ -174,6 +174,10 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
     Boolean ToCustomer = false;
     Boolean ToHome = false;
     Boolean bottomSheet = false;
+    LatLng endLocation;
+    Marker marker;
+    LatLng endLocation2;
+    Bitmap bitmapIcon;
 
 
     @Override
@@ -185,6 +189,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
         binding = ActivityDriverMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+        bitmapIcon = BitmapFactory.decodeResource(getResources(), R.drawable.block);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("message");
@@ -323,19 +328,38 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
         map.setMyLocationEnabled(true);
         //Get location every second
 
+        endLocation2 = new LatLng(-33.9717, 25.6240);
+
+
+        bitmapIcon = Bitmap.createScaledBitmap(bitmapIcon, 1, 1, false);
+
         //Get my current location
 
-        map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener()
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable()
         {
             @Override
-            public void onMyLocationChange(Location location)
+            public void run()
             {
+
+                Location location = map.getMyLocation();
+                if (location != null)
+                {
                 myLocation = location;
                 //Convert location to LatLong
                 start = new LatLng(location.getLatitude(), location.getLongitude());
 
+                marker = map.addMarker(new MarkerOptions().position(start).title("My Location").icon(BitmapDescriptorFactory.fromBitmap(bitmapIcon)).flat(true));
+
+
                 driverLat = location.getLatitude();
                 driverLng = location.getLongitude();
+
+                endLocation = new LatLng(start.latitude, start.longitude);
+
+                animateMarkerNew(endLocation2, start, marker);
+                getBearing(start, endLocation);
+
 
 
                 if (!myLocationFound)
@@ -355,7 +379,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
 
                 LatLng ltlng = new LatLng(location.getLatitude(), location.getLongitude());
 
-                CameraPosition cameraPosition = new CameraPosition.Builder()
+                /*CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(start)
                         // Sets the center of the map to Mountain View
                         .zoom(20)                   // Sets the zoom
@@ -363,16 +387,25 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                         .tilt(55)
                         // Sets the tilt of the camera to 30 degrees
                         .build();                   // Creates a CameraPosition from the builder
-                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));*/
 
                 SphericalUtil.computeOffsetOrigin(ltlng, 100, 90);
 
-                if (myLocationFound == false)
-                {
-                    myLocationFound = true;
-                }
+
+                    handler.postDelayed(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            marker.remove();
+                        }
+                    }, 1000);
             }
-        });
+                handler.postDelayed(this, 1000);
+                endLocation2 = endLocation;
+        }
+        }, 1000);
+
     }
 
     private void getDriverOrderLocation()
@@ -644,6 +677,13 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
 
 
 
+                            float[] results = new float[1];
+                            Location.distanceBetween(start.latitude, start.longitude, end.latitude, end.longitude, results);
+                            Log.d(TAG, "Distance between driver and client: " + start.latitude + " " + start.longitude + " " + end.latitude + " " + end.longitude + " " + results[0]);
+                            final float distanceInMeters = results[0];
+
+
+
                             //Update UI using method
                             runOnUiThread(new Runnable()
                             {
@@ -667,7 +707,7 @@ public class DriverMaps extends FragmentActivity implements OnMapReadyCallback, 
                                         address.setText("Distance" +"\n" + distanceStringHome);
                                         TextView time = findViewById(R.id.time_map);
                                         time.setText("Distance" + "\n" + durationStringHome);
-                                        if (distanceDouble < 99 && distanceDouble > 0)
+                                        if (distanceInMeters < 100 && distanceInMeters > 0)
                                         {
                                             bottomSheetDialog = new BottomSheetDialog(DriverMaps.this, R.style.BottomSheetDialogTheme);
                                             bottomSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.layout_bottom_sheet_driver_dropped_off, findViewById(R.id.bottomSheetTripDroppedOff));
