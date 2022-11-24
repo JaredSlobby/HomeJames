@@ -71,6 +71,7 @@ public class ReportsInfo extends Fragment {
             String Info = bundle.getString("Info");
             String Reason = bundle.getString("Reason");
             String TripID = bundle.getString("TripID");
+            String driverName = bundle.getString("DriverName");
 
 
             DriverName = view.findViewById(R.id.nameDriver);
@@ -80,21 +81,7 @@ public class ReportsInfo extends Fragment {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
             //Read from database specifying with collection
-            db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            if (document.getId().matches(DriverUID)) {
-                                DriverName.setText(document.getString("UserName") + " " + (document.getString("UserSurname")));
 
-                            }
-                        }
-                    } else {
-                        Log.w(TAG, "Error getting documents.", task.getException());
-                    }
-                }
-            });
 
 
             ReportReason.setText("Report Reason: " + Reason);

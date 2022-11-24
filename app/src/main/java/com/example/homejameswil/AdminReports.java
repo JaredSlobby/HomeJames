@@ -34,6 +34,7 @@ public class AdminReports extends Fragment
     ArrayList<String> info;
     ArrayList<String> reason;
     ArrayList<String> tripID;
+    ArrayList<String> DriverName;
 
     ListView listReports;
     ArrayAdapter<String> adapter;
@@ -58,6 +59,7 @@ public class AdminReports extends Fragment
         info = new ArrayList<>();
         reason = new ArrayList<>();
         tripID = new ArrayList<>();
+        DriverName = new ArrayList<>();
 
 
         listReports = view.findViewById(R.id.listReports);
@@ -83,6 +85,7 @@ public class AdminReports extends Fragment
                         info.add(document.getString("Info"));
                         reason.add(document.getString("Reason"));
                         tripID.add(document.getString("TripID"));
+                        DriverName.add(document.getString("DriverName"));
                     }
                 }
                 else
@@ -106,6 +109,7 @@ public class AdminReports extends Fragment
                 bundle.putString("Info", info.get(position));
                 bundle.putString("Reason", reason.get(position));
                 bundle.putString("TripID", tripID.get(position));
+                bundle.putString("DriverName", DriverName.get(position));
 
 
                 /*Fragment fragment = new ReportsInfo();
