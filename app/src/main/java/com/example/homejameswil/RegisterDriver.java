@@ -40,6 +40,7 @@ public class RegisterDriver extends Fragment
     EditText user_name, pass_word,txtName, txtSurname, txtIDNumber, txtCellNumber, txtVehType, txtVehColour, txtVehNumPlate;
     FirebaseAuth mAuth;
     ImageButton btnBack;
+    BottomNavigationView navBar;
 
     FirebaseUser user;
     String uid;
@@ -49,7 +50,7 @@ public class RegisterDriver extends Fragment
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_register_driver, container, false);
 
-        BottomNavigationView navBar = getActivity().findViewById(R.id.bottom_navigation_admin);
+        navBar = getActivity().findViewById(R.id.bottom_navigation_admin);
         navBar.setVisibility(View.GONE);
         goBack();
 
@@ -173,6 +174,7 @@ public class RegisterDriver extends Fragment
             @Override
             public void onClick(View v)
             {
+                navBar.setVisibility(View.VISIBLE);
                 Fragment fragment = new Admin_Drivers();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.frameLayout, fragment);
