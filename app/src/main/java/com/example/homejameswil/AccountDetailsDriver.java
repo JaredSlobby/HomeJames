@@ -40,6 +40,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class AccountDetailsDriver extends Fragment
@@ -98,11 +99,24 @@ public class AccountDetailsDriver extends Fragment
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        Bundle b = getArguments();
+        Bundle b = this.getArguments();
+
+        String hide;
 
         if(b != null)
         {
            uid = b.getString("docID");
+           hide = b.getString("Hide");
+            if(hide == "Yes")
+            {
+                btnExport.setVisibility(View.INVISIBLE);
+                btnEdit.setVisibility(View.INVISIBLE);
+            }
+            else
+            {
+                btnExport.setVisibility(View.VISIBLE);
+                btnEdit.setVisibility(View.VISIBLE);
+            }
         }
         else
         {
@@ -110,15 +124,8 @@ public class AccountDetailsDriver extends Fragment
             uid = user.getUid();
         }
 
-        if(b.getString("Hide") == "Yes")
-        {
-            btnExport.setVisibility(View.INVISIBLE);
-            btnEdit.setVisibility(View.INVISIBLE);
-        }
-        else
-        {
 
-        }
+
 
 
 
