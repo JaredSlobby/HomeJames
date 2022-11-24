@@ -76,7 +76,8 @@ public class AccountDetailsDriver extends Fragment
         rating();
         edit();
 
-        if (checkPermission()) {
+        if (checkPermission())
+        {
             Toast.makeText(getContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
         } else {
             requestPermission();
@@ -107,6 +108,16 @@ public class AccountDetailsDriver extends Fragment
         {
             user = FirebaseAuth.getInstance().getCurrentUser();
             uid = user.getUid();
+        }
+
+        if(b.getString("Hide") == "Yes")
+        {
+            btnExport.setVisibility(View.INVISIBLE);
+            btnEdit.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+
         }
 
 
