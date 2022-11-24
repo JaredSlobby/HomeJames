@@ -351,7 +351,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutVehNumPlate"
         app:strokeColor="@color/black"
         app:strokeWidth="2dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginRight="30pt"
         android:layout_marginLeft="30pt"
         android:text="@string/register"/>
