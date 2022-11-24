@@ -57,7 +57,7 @@ public class LandingPage extends Fragment {
     boolean myLocationFound = false;
     SupportMapFragment supportMapFragment;
     View view;
-    TextView welcome, workingHours;
+    TextView welcome, workingHours, DriverName;
     FirebaseUser user;
     Button btnPinMyHome;
     String uid;
@@ -76,6 +76,7 @@ public class LandingPage extends Fragment {
         view = inflater.inflate(R.layout.fragment_landing_page, container, false);
 
         ActiveDriverImage = view.findViewById(R.id.ActiveDriverImage);
+        DriverName = view.findViewById(R.id.DriverName);
         ActiveDriverImage.setVisibility(View.INVISIBLE);
         cardView = view.findViewById(R.id.active_driver);
         cardView.setVisibility(View.INVISIBLE);
@@ -322,6 +323,7 @@ public class LandingPage extends Fragment {
                             //Do What I want for now
                             document.getString("DriverName");
                             String DriverUID = document.getString("DriverName");
+                            DriverName.setText(DriverUID);
                             carViewClick(DriverUID);
                         }
                     }
