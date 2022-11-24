@@ -88,6 +88,7 @@ public class Fragment_rides extends Fragment
     ArrayList<String> time;
     ArrayList<Double> latitude;
     ArrayList<Double> longitude;
+    ArrayList<String> DriverName;
 
     ArrayList<String> clientDate;
     ArrayList<Double> clientLatitude;
@@ -209,6 +210,37 @@ public class Fragment_rides extends Fragment
                     }
                 });
 
+
+
+        DriverName = new ArrayList();
+
+        db.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task)
+            {
+                if (task.isSuccessful())
+                {
+                    for (QueryDocumentSnapshot document : task.getResult())
+                    {
+                        if(document.getId().matches(user.getUid()))
+                        {
+                            DriverName.add(document.getString("UserName") + " " + document.getString("UserSurname"));
+                        }
+                    }
+                }
+                else
+                {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+
+
+
+
         //[Cursor parking]
         //[              ]
         //[              ]
@@ -318,6 +350,7 @@ public class Fragment_rides extends Fragment
                         user.put("Status", "Active");
                         user.put("Name", cName);
                         user.put("SMS", "No");
+                        user.put("DriverName", DriverName.get(0));
 
                         //Writing to Firestore specifying collection path with custom set Document reference
                         db.collection("Orders").document(DocID).update(user).addOnSuccessListener(new OnSuccessListener<Void>()
