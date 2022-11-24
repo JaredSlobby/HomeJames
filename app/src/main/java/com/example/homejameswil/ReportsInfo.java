@@ -86,6 +86,7 @@ public class ReportsInfo extends Fragment {
 
             ReportReason.setText("Report Reason: " + Reason);
             ReportInfo.setText("Report Info: " + Info);
+            DriverName.setText("Driver Name: " + driverName);
 
             Log.d(TAG, "Admin Complaints" + docID + CustomerUID + DriverUID + Info + Reason + TripID);
 

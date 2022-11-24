@@ -111,7 +111,6 @@ public class AdminReports extends Fragment
                 bundle.putString("TripID", tripID.get(position));
                 bundle.putString("DriverName", DriverName.get(position));
 
-
                 /*Fragment fragment = new ReportsInfo();
                 fragment.setArguments(bundle);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
