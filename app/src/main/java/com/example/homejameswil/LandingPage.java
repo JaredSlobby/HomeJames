@@ -9,8 +9,10 @@ import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -59,6 +61,8 @@ public class LandingPage extends Fragment {
     Button btnPinMyHome;
     String uid;
     TextView cnt;
+    CardView cardView;
+
     private static final String ONESIGNAL_APP_ID = "556bf015-31aa-42d9-a448-4642ce2fb4b7";
 
     ArrayList<Double> HomeLatitude;
@@ -110,12 +114,15 @@ public class LandingPage extends Fragment {
 
         // Async map
 
-        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+        supportMapFragment.getMapAsync(new OnMapReadyCallback()
+        {
             @SuppressLint("MissingPermission")
             @Override
-            public void onMapReady(GoogleMap googleMap) {
+            public void onMapReady(GoogleMap googleMap)
+            {
                 boolean success = googleMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json)));
-                if (!success) {
+                if (!success)
+                {
                     Log.e(TAG, "Style parsing failed.");
                 }
                 //Setting my location and hiding gestures test
@@ -123,9 +130,11 @@ public class LandingPage extends Fragment {
                 googleMap.getUiSettings().setMyLocationButtonEnabled(false);
                 googleMap.getUiSettings().setAllGesturesEnabled(false);
 
-                googleMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+                googleMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener()
+                {
                     @Override
-                    public void onMyLocationChange(Location location) {
+                    public void onMyLocationChange(Location location)
+                    {
                         myLocation = location;
                         //Convert location to LatLong
                         customerLocation = new LatLng(location.getLatitude(), location.getLongitude());
@@ -135,7 +144,8 @@ public class LandingPage extends Fragment {
                         LatLng ltlng = new LatLng(location.getLatitude(), location.getLongitude());
                         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(ltlng, 15f);
 
-                        if (myLocationFound == false) {
+                        if (myLocationFound == false)
+                        {
                             googleMap.moveCamera(cameraUpdate);
                             myLocationFound = true;
                         }
@@ -251,9 +261,11 @@ public class LandingPage extends Fragment {
 
         btnPinMyHome = view.findViewById(R.id.PinHome);
 
-        btnPinMyHome.setOnClickListener(new View.OnClickListener() {
+        btnPinMyHome.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 Intent intent = new Intent(getActivity(), HomeMaps.class);
                 startActivity(intent);
             }
@@ -285,19 +297,25 @@ public class LandingPage extends Fragment {
 
     }
 
-    private void currentActiveTrip() {
+    private void currentActiveTrip()
+    {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         //Read from database specifying with collection
-        db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("Orders").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
+        {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            public void onComplete(@NonNull Task<QuerySnapshot> task)
+            {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        if (document.getString("UID").matches(user.getUid()) && document.getString("Status").matches("Active")) {
+                    for (QueryDocumentSnapshot document : task.getResult())
+                    {
+                        if (document.getString("UID").matches(user.getUid()) && document.getString("Status").matches("Active"))
+                        {
                             //Do What I want for now
-                            Toast.makeText(getContext(), "You have an active trip", Toast.LENGTH_SHORT).show();
-
+                            document.getString("Name");
+                            String DriverUID = document.getString("DriverUID");
+                            carViewClick(DriverUID);
                         }
                     }
                 } else {
@@ -305,6 +323,27 @@ public class LandingPage extends Fragment {
                 }
             }
         });
+    }
+
+    private void carViewClick(String driverUID)
+    {
+        cardView = view.findViewById(R.id.active_driver);
+        cardView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Bundle bundle = new Bundle();
+                bundle.putString("docID", driverUID);
+
+                Fragment fragment = new AccountDetailsDriver();
+                fragment.setArguments(bundle);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.frameLayout, fragment);
+                ft.commit();
+            }
+        });
+
     }
 }
 

@@ -139,12 +139,35 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="75dp"
+            android:layout_height="95dp"
             app:cardCornerRadius="20dp"
             android:elevation="10dp"
-            android:layout_marginTop="15dp"
+            android:id="@+id/active_driver"
+            android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@id/linearLayout"
-            android:backgroundTint="@color/homeJames"/>
+            android:backgroundTint="@color/homeJames">
+            <com.google.android.material.imageview.ShapeableImageView
+                app:srcCompat="@drawable/max"
+                app:shapeAppearanceOverlay="@style/circleImageView"
+                android:elevation="15dp"
+                android:padding="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:clickable="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Oliver Honiball"
+                android:textSize="25sp"
+                android:layout_marginStart="40dp"
+                android:textColor="@color/white"
+                android:id="@+id/DriverName"
+                android:layout_gravity="center"/>
+
+        </androidx.cardview.widget.CardView>
 
 
         <androidx.cardview.widget.CardView
@@ -153,8 +176,8 @@
             app:cardCornerRadius="20dp"
             android:elevation="10dp"
             android:id="@+id/mapCard"
-            android:layout_marginTop="105dp"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/active_driver">
 
         <fragment
             android:id="@+id/map"
