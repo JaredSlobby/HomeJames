@@ -155,12 +155,13 @@
                 android:layout_centerHorizontal="true"
                 android:layout_width="95dp"
                 android:layout_height="95dp"
-                android:clickable="true"/>
+                android:clickable="true"
+                android:id="@+id/ActiveDriverImage"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Oliver Honiball"
+                android:text=""
                 android:textSize="25sp"
                 android:layout_marginStart="40dp"
                 android:textColor="@color/white"

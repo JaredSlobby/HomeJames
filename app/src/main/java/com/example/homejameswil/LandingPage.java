@@ -34,6 +34,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -62,6 +63,7 @@ public class LandingPage extends Fragment {
     String uid;
     TextView cnt;
     CardView cardView;
+    ShapeableImageView ActiveDriverImage;
 
     private static final String ONESIGNAL_APP_ID = "556bf015-31aa-42d9-a448-4642ce2fb4b7";
 
@@ -72,6 +74,11 @@ public class LandingPage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_landing_page, container, false);
+
+        ActiveDriverImage = view.findViewById(R.id.ActiveDriverImage);
+        ActiveDriverImage.setVisibility(View.INVISIBLE);
+        cardView = view.findViewById(R.id.active_driver);
+        cardView.setVisibility(View.INVISIBLE);
 
         // Get logged in user UID
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -327,7 +334,8 @@ public class LandingPage extends Fragment {
 
     private void carViewClick(String driverUID)
     {
-        cardView = view.findViewById(R.id.active_driver);
+        cardView.setVisibility(View.VISIBLE);
+        ActiveDriverImage.setVisibility(View.VISIBLE);
         cardView.setOnClickListener(new View.OnClickListener()
         {
             @Override
