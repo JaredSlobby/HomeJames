@@ -30,7 +30,7 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:id="@+id/textInputLayoutName"
-            android:layout_width="165dp"
+            android:layout_width="166dp"
             android:layout_height="wrap_content"
             android:hint="@string/first_name"
             app:boxStrokeColor="@color/white"
@@ -62,7 +62,7 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:id="@+id/textInputLayoutSurname"
-            android:layout_width="165dp"
+            android:layout_width="166dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="32dp"
@@ -351,7 +351,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayoutVehNumPlate"
         app:strokeColor="@color/black"
         app:strokeWidth="2dp"
-        android:layout_marginBottom="35dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginRight="30pt"
         android:layout_marginLeft="30pt"
         android:text="@string/register"/>
