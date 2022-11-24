@@ -173,7 +173,7 @@ public class RegisterDriver extends Fragment
             @Override
             public void onClick(View v)
             {
-                Fragment fragment = new AccountDetails();
+                Fragment fragment = new Admin_Drivers();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.frameLayout, fragment);
                 ft.commit();
